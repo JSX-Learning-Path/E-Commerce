@@ -19,7 +19,7 @@ function Login() {
     setLoading(false);
   };
 
-  return (  
+  return (
     <div className="container mt-5 mb-bottom-5" style={{ maxWidth: 400 }}>
       <h2>Login</h2>
       <form onSubmit={handleLogin}>

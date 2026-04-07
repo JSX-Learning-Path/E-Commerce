@@ -1,5 +1,11 @@
 import React from "react";
-import { FaHome, FaBoxOpen, FaInfoCircle, FaEnvelope } from "react-icons/fa";
+import {
+  FaHome,
+  FaBoxOpen,
+  FaInfoCircle,
+  FaEnvelope,
+} from "react-icons/fa";
+import { IoLogIn } from "react-icons/io5"; // <-- правилен импорт
 import { Link } from "react-router-dom";
 import Login from "./Login";
 
@@ -61,7 +67,18 @@ function Header() {
                   className="nav-link text-white text-decoration-none d-flex align-items-center"
                   style={{ gap: "6px" }}
                 >
+                  <IoLogIn size={20} />
                   Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  to="/register"
+                  className="nav-link text-white text-decoration-none d-flex align-items-center"
+                  style={{ gap: "6px" }}
+                >
+                  <IoLogIn size={20} />
+                  Register
                 </Link>
               </li>
             </ul>
