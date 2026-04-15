@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import emailjs from "@emailjs/browser";
+import "../styles/Contacts.css";
 
 function Contact() {
   const [form, setForm] = useState({
@@ -74,16 +75,17 @@ function Contact() {
   };
   return (
     <div className="d-flex flex-column align-items-center bg-light min-vh-100">
-      <h2 className="">Contact Us</h2>
-      <div className=" d-flex flex-column flex-lg-row gap-4">
-        <div className="card p-3 bg-light">
-          <h4 className="justify-content-center d-flex ">Send us a Message</h4>
+      <h1 className="">Contact Us</h1>
+      <p>We'd Love to hear from you</p>
+      <div className="d-flex flex-column flex-lg-row mt-3 gap-5">
+        <div className="card p-3 bg-light shadow-lg border-0">
+          <h3 className="justify-content-center d-flex ">Send us a Message</h3>
           <p className="justify-content-center d-flex">
             Please fill out the form below to get in touch with us.
           </p>
           <form onSubmit={handleSubmit} className="d-flex flex-column gap-5">
             <div className="d-flex flex-column ">
-              <label htmlFor="name" className="">
+              <label htmlFor="name" className="mt-3">
                 Name:
               </label>
               <input
@@ -95,7 +97,7 @@ function Contact() {
                 className="p-2 border rounded-1"
                 required
               />
-              <label htmlFor="email" className="">
+              <label htmlFor="email" className="mt-3">
                 Email:
               </label>
               <input
@@ -107,7 +109,7 @@ function Contact() {
                 className="p-2 border rounded-1"
                 required
               />
-              <label htmlFor="phone" className="">
+              <label htmlFor="phone" className="mt-3">
                 Phone:
               </label>
               <input
@@ -121,7 +123,7 @@ function Contact() {
               />
             </div>
             <div className="d-flex flex-column col-md-10 ">
-              <label htmlFor="message" className="">
+              <label htmlFor="message" className="mb-2">
                 Message:
               </label>
               <textarea
@@ -135,9 +137,9 @@ function Contact() {
               ></textarea>
             </div>
 
-            <div>
+            <div className="d-flex justify-content-center">
               <button
-                className="btn btn-primary"
+                className="btn btn-primary px-4 py-2 opacity-80"
                 type="submit"
                 disabled={status === "sending"}
               >
@@ -154,7 +156,7 @@ function Contact() {
             </div>
           </form>
         </div>
-        <div className="d-flex flex-column gap-3 border rounded p-3">
+        <div className="d-flex flex-column gap-3 border rounded p-3 shadow-lg bg-white">
           <iframe
             title="Our Location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2959.2857438557094!2d24.728339276752592!3d42.12276567121589!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14acd03c0a396b7f%3A0xcdba5a55532fa58!2z0LYu0LouINCl0YDQuNGB0YLQviDQkdC-0YLQtdCyIC0g0K7Qs9Cu0LbQtdC9LCDRg9C7LiDigJ7Qk9C10L7RgNCz0Lgg0JjQutC-0L3QvtC80L7QsuKAnCAxLCA0MDA0INCf0LvQvtCy0LTQuNCy!5e0!3m2!1sbg!2sbg!4v1775375140185!5m2!1sbg!2sbg"
@@ -164,12 +166,21 @@ function Contact() {
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
+            className="border-1 rounded shadow-lg"
           ></iframe>
-          <div className=" d-flex flex-column gap-2 p-3 ">
-            <h4>Our Location and Contact Information</h4>
-            <p>Email: doncho8884@gmail.com</p>
-            <p>Phone: +359 88 688 4507</p>
-            <p>Address: Plovdiv, Bulgaria</p>
+          <div className="d-flex flex-column gap-2 p-3">
+            <h4 className="">
+              Our Location and Contact Information
+            </h4>
+            <p className="bg-light py-2 px-2 text-center rounded bg-opacity-50 glass-effect">
+              Email: doncho8884@gmail.com
+            </p>
+            <p className="bg-light py-2 px-2 text-center rounded bg-opacity-50 glass-effect">
+              Phone: +359 88 688 4507
+            </p>
+            <p className="bg-light py-2 px-2 text-center rounded bg-opacity-50 glass-effect">
+              Address: Plovdiv, Bulgaria
+            </p>
           </div>
         </div>
       </div>
