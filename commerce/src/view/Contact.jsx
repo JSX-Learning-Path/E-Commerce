@@ -169,9 +169,7 @@ function Contact() {
             className="border-1 rounded shadow-lg"
           ></iframe>
           <div className="d-flex flex-column gap-2 p-3">
-            <h4 className="">
-              Our Location and Contact Information
-            </h4>
+            <h4 className="">Our Location and Contact Information</h4>
             <p className="bg-light py-2 px-2 text-center rounded bg-opacity-50 glass-effect">
               Email: doncho8884@gmail.com
             </p>
