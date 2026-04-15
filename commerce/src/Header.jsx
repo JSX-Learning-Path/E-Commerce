@@ -4,9 +4,14 @@ import { IoLogIn } from "react-icons/io5"; // <-- правилен импорт
 import { Link } from "react-router-dom";
 import Login from "./Login";
 import { useAuth } from "./context/AuthContext";
+import { supabase } from "./js/main";
 
 function Header() {
   const { user } = useAuth();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
 
   return (
     <header>
@@ -60,11 +65,21 @@ function Header() {
                 </Link>
               </li>
               {user ? (
-                <li className="nav-item">
-                  <span className="nav-link text-white">
-                    Hey, {user.email}
-                  </span>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <span className="nav-link text-white">
+                      Hey, {user.email}
+                    </span>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className="btn bg-dark opacity-75"
+                      onClick={handleLogout}
+                    >
+                      Signout
+                    </button>
+                  </li>
+                </>
               ) : (
                 <>
                   <li className="nav-item">
