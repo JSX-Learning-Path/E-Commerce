@@ -1,6 +1,6 @@
 import React from "react";
 import { FaHome, FaBoxOpen, FaInfoCircle, FaEnvelope } from "react-icons/fa";
-import { IoLogIn } from "react-icons/io5"; // <-- правилен импорт
+import { IoLogIn } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import Login from "./Login";
 import { useAuth } from "./context/AuthContext";
