@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { supabase } from "./js/main";
 import "../src/styles/Login.css";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,6 +19,9 @@ function Login() {
       password,
     });
     if (error) setError(error.message);
+    else {
+      navigate("/");
+    }
     setLoading(false);
   };
 
