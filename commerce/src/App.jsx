@@ -6,6 +6,7 @@ import Products from "./view/Products";
 import Contact from "./view/Contact";
 import Login from "./Login";
 import SecondNavigation from "./SecondNavigation";
+import Register from "./Register";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/products" element={<Products />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </div>
   );

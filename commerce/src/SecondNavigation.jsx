@@ -1,7 +1,10 @@
 function SecondNavigation() {
   return (
-    <nav className="second-nav bg-secondary py-2">
-      <ul className="d-flex list-unstyled justify-content-center mb-0" style={{ gap: "20px" }}>
+    <nav className="second-nav bg-dark bg-opacity-85 py-2 border-top border-secondary">
+      <ul
+        className="d-flex list-unstyled justify-content-center mb-0"
+        style={{ gap: "20px" }}
+      >
         <li className="">
           <a href="#section1" className="text-decoration-none">
             All Products
