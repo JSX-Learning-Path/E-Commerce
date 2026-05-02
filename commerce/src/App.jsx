@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme, GlobalStyle } from "./js/theme";
 import Header from "./Header";
 import { Routes, Route } from "react-router-dom";
 import About from "./view/About";
-import Products from "./view/Products";
+import Products from "../src/Product";
 import Contact from "./view/Contact";
 import Login from "./Login";
 import SecondNavigation from "./SecondNavigation";
 import Register from "./Register";
 
-const App = () => {
+function App() {
+  const [theme, setTheme] = useState("light");
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+
   return (
-    <div>
-      <Header />
+    <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+      <GlobalStyle />
+      <Header
+        theme={theme}
+        toggleTheme={toggleTheme}
+      />
+      {/* <Switch /> */}
       <SecondNavigation />
       <Routes>
         <Route path="/" />
@@ -21,9 +34,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
-    </div>
+    </ThemeProvider>
   );
-};
+}
 
 export default App;
 

@@ -5,25 +5,60 @@ import { Link } from "react-router-dom";
 import Login from "./Login";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./js/main";
+import { useState } from "react";
+import Switch from "./components/Switch";
 
-function Header() {
+function Header({ theme, toggleTheme }) {
+  const [loading, setLoading] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+
   const { user } = useAuth();
+
+  function handleBlur() {
+    setTimeout(() => {
+      setShowResults(false);
+    }, 10);
+  }
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
   };
 
+  // Choose logo based on the theme
+  const logoSrc = theme === "dark" ? "/logo-dark.png" : "/logo-light.png";
+  const logoAlt = theme === "dark" ? "Dark Logo" : "Light Logo";
+
   return (
     <header>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav
+        className={`navbar navbar-expand-lg ${theme === "dark" ? "bg-dark" : "bg-light"}`}
+      >
         <div className="container">
           <Link
             to="/"
             className="navbar-brand text-white text-decoration-none d-flex align-items-center justify-content-center"
             style={{ gap: "8px" }}
           >
-            Home <FaHome size={24} className="ms-1" />
+            <img src={logoSrc} alt={logoAlt} style={{ height: "42px" }} />
+            <style>{`
+              .header-logo {
+                max-height: 70px;
+                min-height: 70px;
+                width: auto;
+                display: block;
+              }
+              .header-fixed-height {
+                min-height: 70px;
+                display: flex;
+                align-items: center !important;
+              }
+              .custom-blue-dark {
+                background: linear-gradient(90deg, #181e3a 0%, #22306b 100%) !important;
+                border-bottom: 2px solid #1e293b;
+              }
+            `}</style>
           </Link>
+          {/* <SearchBar /> */}
           <button
             className="navbar-toggler"
             type="button"
@@ -40,7 +75,7 @@ function Header() {
               <li className="nav-item">
                 <Link
                   to="/products"
-                  className="nav-link text-white text-decoration-none d-flex align-items-center"
+                  className="nav-link text-decoration-none d-flex align-items-center"
                   style={{ gap: "6px" }}
                 >
                   <FaBoxOpen size={20} /> Products
@@ -49,7 +84,7 @@ function Header() {
               <li className="nav-item">
                 <Link
                   to="/about"
-                  className="nav-link text-white text-decoration-none d-flex align-items-center"
+                  className="nav-link text-decoration-none d-flex align-items-center"
                   style={{ gap: "6px" }}
                 >
                   <FaInfoCircle size={20} /> About
@@ -58,7 +93,7 @@ function Header() {
               <li className="nav-item">
                 <Link
                   to="/contact"
-                  className="nav-link text-white text-decoration-none d-flex align-items-center"
+                  className="nav-link  text-decoration-none d-flex align-items-center"
                   style={{ gap: "6px" }}
                 >
                   <FaEnvelope size={20} /> Contact
@@ -67,9 +102,7 @@ function Header() {
               {user ? (
                 <>
                   <li className="nav-item">
-                    <span className="nav-link text-white">
-                      Hey, {user.email}
-                    </span>
+                    <span className="nav-link ">Hey, {user.email}</span>
                   </li>
                   <li className="nav-item">
                     <button
@@ -106,6 +139,12 @@ function Header() {
               )}
             </ul>
           </div>
+        </div>
+        <div
+          className="d-flex align-items-center"
+          style={{ gap: "12px", marginRight: "16px" }}
+        >
+          <Switch checked={theme === "dark"} onChange={toggleTheme} />
         </div>
       </nav>
     </header>
