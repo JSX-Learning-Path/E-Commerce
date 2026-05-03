@@ -9,6 +9,7 @@ import Contact from "./view/Contact";
 import Login from "./Login";
 import SecondNavigation from "./SecondNavigation";
 import Register from "./Register";
+import Home from "./view/Home";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -20,14 +21,11 @@ function App() {
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyle />
-      <Header
-        theme={theme}
-        toggleTheme={toggleTheme}
-      />
+      <Header theme={theme} toggleTheme={toggleTheme} />
       {/* <Switch /> */}
       <SecondNavigation />
       <Routes>
-        <Route path="/" />
+        <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/products" element={<Products />} />
         <Route path="/contact" element={<Contact />} />

@@ -12,7 +12,7 @@ function Products() {
       setLoading(true);
       try {
         const response = await axios.get(
-          "https://dummyjson.com/products?limit=200"
+          "https://dummyjson.com/products?limit=500",
         );
         setProducts(response.data.products || []);
       } catch (error) {

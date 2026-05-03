@@ -24,11 +24,11 @@ async function fetchProductsById(id) {
       throw new Error(`HTTP error!: ${response.status}`);
     } else {
       const data = await response.json();
-      return data.products || [];
+      return data.products;
     }
   } catch (error) {
     console.log("Error fetching product by id:", error);
-    return [];
+    return null;
   }
 }
 
