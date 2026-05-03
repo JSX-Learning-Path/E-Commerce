@@ -24,7 +24,7 @@ const StyledWrapper = styled.div`
     top: 0;
     padding: 0;
     margin: 0;
-    color: #C8B6FF;
+    color: #81A6C6;
     animation: text_713 3.5s ease both infinite;
     font-size: .8rem;
     letter-spacing: 1px;
