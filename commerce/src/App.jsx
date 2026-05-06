@@ -10,6 +10,7 @@ import Login from "./Login";
 import SecondNavigation from "./SecondNavigation";
 import Register from "./Register";
 import Home from "./view/Home";
+import Footer from "./Footer";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -32,6 +33,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
+      <Footer  />
     </ThemeProvider>
   );
 }
