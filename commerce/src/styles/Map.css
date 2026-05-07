@@ -1,0 +1,7 @@
+.map-container {
+  transition: transform 0.3 ease-out;
+}
+
+.map-container:hover {
+  transform: scale(1.05);
+}
