@@ -18,18 +18,13 @@ async function fetchProducts() {
 }
 
 async function fetchProductsById(id) {
-  try {
-    const response = await fetch(`${BASE}/products/${id}`);
-    if (!response.ok) {
-      throw new Error(`HTTP error!: ${response.status}`);
-    } else {
-      const data = await response.json();
-      return data.products;
-    }
-  } catch (error) {
-    console.log("Error fetching product by id:", error);
-    return null;
+  const response = await fetch(`https://dummyjson.com/products/${id}`);
+  if (!response.ok) {
+      return null; 
   }
+  const data = await response.json();
+  console.log("Fetched product data:", data);
+  return data;
 }
 
 async function fetchProductsByCategory(category) {
@@ -47,6 +42,4 @@ async function fetchProductsByCategory(category) {
   }
 }
 
-
-
-export default {fetchProducts, fetchProductsById, fetchProductsByCategory};
+export default { fetchProducts, fetchProductsById, fetchProductsByCategory };

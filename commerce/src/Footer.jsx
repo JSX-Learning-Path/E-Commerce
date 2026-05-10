@@ -77,12 +77,12 @@ function Footer() {
               referrerPolicy="no-referrer-when-downgrade"
               className=" map-container border-1 rounded shadow-lg hover:width-105% transition-all duration-300 ease-in-out"
             ></iframe>
-            <p className="bg-dark bg-gradient text-white p-2 d-flex align-items-center gap-1 mt-2 rounded ">
+            <p className="text-black p-2 d-flex align-items-center gap-1 mt-2 rounded ">
               <CiLocationOn />1 Georgi Ikonomov St., Plovdiv, Bulgaria
             </p>
           </div>
         </div>
-      </footer>
+      </footer>x
     </div>
   );
 }

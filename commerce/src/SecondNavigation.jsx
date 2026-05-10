@@ -1,26 +1,46 @@
+import React from "react";
+import { NavLink, useLocation } from "react-router-dom";
 function SecondNavigation() {
+  const location = useLocation();
+
+  const categories = [
+    { name: "Gaming and Tech", slug: "laptops" },
+    { name: "Fashion World", slug: "mens-shirts" },
+    { name: "Modern Home", slug: "home-decoration" },
+    { name: "Daily Smartphones", slug: "smartphones" },
+    { name: "Glow and Beauty", slug: "beauty" },
+    { name: "Auto and Moto", slug: "automotive" },
+  ];
   return (
-    <nav className="second-nav bg-dark bg-opacity-85 py-2 border-top border-secondary">
-      <ul
-        className="d-flex list-unstyled justify-content-center mb-0"
-        style={{ gap: "20px" }}
-      >
-        <li className="">
-          <a href="#section1" className="text-decoration-none">
-            All Products
-          </a>
-        </li>
-        <li>
-          <a href="#section2" className="text-decoration-none">
-            On Sale
-          </a>
-        </li>
-        <li>
-          <a href="#section3" className="text-decoration-none">
-            New Arrivals
-          </a>
-        </li>
-      </ul>
+    <nav>
+      <div className="d-flex justify-content-center">
+        <ul className="nav gap-2  flex-wrap py-3 bg-primary mt-3 d-inline-flex rounded-pill ">
+          <li>
+            <NavLink
+              to="/products"
+              end
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Products
+            </NavLink>
+          </li>
+          {categories.map((cat) => (
+            <li key={cat.slug} className="nav-item">
+              <NavLink
+                to="/products"
+                state={{ selectedCategory: cat.slug }}
+                className={() => {
+                  const isActive =
+                    location.state?.selectedCategory === cat.slug;
+                  return `nav-link rounded-pill py-2 px-3 px-sm-4 transition-all${isActive ? " active" : ""}`;
+                }}
+              >
+                {cat.name}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   );
 }
