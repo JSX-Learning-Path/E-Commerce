@@ -7,6 +7,7 @@ import { useAuth } from "./context/AuthContext";
 import { supabase } from "./js/main";
 import { useState } from "react";
 import Switch from "./components/Switch";
+import SearchBar from "./SearchBar";
 
 function Header({ theme, toggleTheme }) {
   const [loading, setLoading] = useState(false);
@@ -58,7 +59,12 @@ function Header({ theme, toggleTheme }) {
               }
             `}</style>
           </Link>
-          {/* <SearchBar /> */}
+          <SearchBar
+            products={[]}
+            onResults={(results) => {
+              console.log("Search results:", results);
+            }}
+          />
           <button
             className="navbar-toggler"
             type="button"

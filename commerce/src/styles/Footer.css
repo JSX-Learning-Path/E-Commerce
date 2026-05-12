@@ -1,0 +1,22 @@
+/* @media (max-width: 1000px) {
+  .footer-container {
+    outline: 1px solid red;
+    display: flex !important;
+    justify-content: space-between;
+    flex-direction: column !important;
+  }
+  .footer-container img {
+    border: 1px solid #ccc;
+    width: 60% !important;
+  }
+  .footer-container ul {
+    border: 1px solid #ccc;
+
+    flex-direction: row !important;
+    align-items: center;
+    gap: 0.5rem !important;
+  }
+  .image-location {
+    margin-top: 1rem;
+  }
+} */

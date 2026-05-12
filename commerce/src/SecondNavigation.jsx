@@ -12,9 +12,9 @@ function SecondNavigation() {
     { name: "Auto and Moto", slug: "automotive" },
   ];
   return (
-    <nav>
-      <div className="d-flex justify-content-center">
-        <ul className="nav gap-2  flex-wrap py-3 bg-primary mt-3 d-inline-flex rounded-pill ">
+    <nav className="bg-light py-3 ">
+      <div className="d-flex justify-content-center ">
+        <ul className="nav gap-2 flex-wrap py-3 bg-primary mt-3 d-inline-flex rounded-pill ">
           <li>
             <NavLink
               to="/products"
