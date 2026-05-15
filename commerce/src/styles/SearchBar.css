@@ -2,6 +2,13 @@
   list-style: none;
   padding: 0;
   margin: 0.5rem 0 0 0;
+  max-height: 300px; /* или колкото искаш */
+  overflow-y: auto;
+  padding-left: 0;
+  margin-top: 8px;
+  position: absolute;
+  top: 80%;
+  z-index: 1;
 }
 
 .search-results li {

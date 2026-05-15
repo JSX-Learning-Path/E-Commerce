@@ -4,17 +4,17 @@ import "./styles/Footer.css";
 function Footer() {
   return (
     <div className="footer-container">
-      <footer className={`bg-light text-dark-emphasis mt-5`}>
+      <footer className={`bg-light text-dark-emphasis mt-4`}>
         <div className="container d-flex justify-content-between align-items-center py-3">
-          <div className="image-and-links">
+          <div className="footer-image-links">
             <img
               src="public/logo-transparent.png"
               alt="Logo"
-              className="w-25"
+              className="image w-25"
             />
             <p className="text-muted">© 2026 NextCart. All rights reserved.</p>
-            <div className="d-flex gap-3">
-              <ul className="list-unstyled d-flex gap-3 border-top border-2 py-2">
+            <div className="footer-links d-flex gap-3">
+              <ul className="footer-links list-unstyled d-flex gap-3 border-top border-2 py-2">
                 <li>
                   <a
                     href="/about"
@@ -84,7 +84,7 @@ function Footer() {
           </div>
         </div>
       </footer>
-      x
+      
     </div>
   );
 }

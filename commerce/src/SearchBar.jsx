@@ -8,31 +8,27 @@ function SearchBar() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `https://dummyjson.com/products/search?q=${searchTerm}`,
-        );
-        const data = await response.json();
-        setProducts(data.products || []);
-      } catch (error) {
-        throw new Error("Failed to fetch products");
-      } finally {
-        setLoading(false);
+    const handler = setTimeout(() => {
+      if (searchTerm) {
+        setLoading(true);
+        fetch(`https://dummyjson.com/products/search?q=${searchTerm}`)
+          .then((res) => res.json())
+          .then((data) => setProducts(data.products || []))
+          .catch(() => setProducts([]))
+          .finally(() => setLoading(false));
       }
-    };
-    if (searchTerm) {
-      fetchData();
-    }
+    }, 500);
+
+    return () => clearTimeout(handler);
   }, [searchTerm]);
 
   return (
-    <div className="search-bar width-300 background-light p-2 rounded">
+    <div>
       <input
         type="text"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        className="form-control search-input w-300"
       />
       {loading && <p>Loading...</p>}
       {!loading && searchTerm && products.length > 0 && (
@@ -41,9 +37,9 @@ function SearchBar() {
             <li key={product.id}>
               <Link
                 to={`/product/${product.id}`}
-                className="text-decoration-none text-dark"
+                className="text-decoration-none text-dark background-light d-flex align-items-center gap-2 p-2 rounded transition hover-shadow"
               >
-                {product.title .concat(" - $", product.price)}
+                {product.title.concat(" - $", product.price)}
                 {product.thumbnail && (
                   <img
                     src={product.thumbnail}
