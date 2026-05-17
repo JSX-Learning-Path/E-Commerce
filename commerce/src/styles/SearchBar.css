@@ -22,3 +22,29 @@
 .search-results li:hover {
   background: #f8f9fa;
 }
+.search-input {
+  min-height: 35px;
+  border-width: 0;
+  box-shadow: none;
+}
+.search-button {
+  min-height: 44px;
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+  position: absolute;
+}
+/* .search-form {
+  padding: 0.3rem;
+  border-radius: 999px;
+  /* default (light) theme */
+  background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(243,247,255,0.92));
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.dark-theme .search-form {
+  /* dark theme override */
+  background: linear-gradient(135deg, rgba(20,24,38,0.95), rgba(32,38,59,0.9));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+} */

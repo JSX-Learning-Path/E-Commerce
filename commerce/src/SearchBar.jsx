@@ -24,13 +24,21 @@ function SearchBar() {
 
   return (
     <div>
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="form-control search-input w-300"
-      />
-      {loading && <p>Loading...</p>}
+      <div className="search-form  relative" style={{ maxWidth: "450px" }}>
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="form-control search-input w-450"
+        />
+        <button
+          type="submit"
+          className="btn btn-primary rounded-pill px-4 search-button"
+        >
+          Search
+        </button>
+      </div>
+      {/* {loading && <p>Loading...</p>} */}
       {!loading && searchTerm && products.length > 0 && (
         <ul className="search-results">
           {products.map((product) => (

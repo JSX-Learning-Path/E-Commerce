@@ -8,10 +8,14 @@ import { supabase } from "./js/main";
 import { useState } from "react";
 import Switch from "./components/Switch";
 import SearchBar from "./SearchBar";
+import { useCart } from "./context/CartContext";
+import CartDrawer from "./components/CartDrawer";
 
 function Header({ theme, toggleTheme }) {
   const [loading, setLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [showCart, setShowCart] = useState(false);
+  const { addToCart, itemsCount } = useCart();
 
   const { user } = useAuth();
 
@@ -28,6 +32,9 @@ function Header({ theme, toggleTheme }) {
   // Choose logo based on the theme
   const logoSrc = theme === "dark" ? "/logo-dark.png" : "/logo-light.png";
   const logoAlt = theme === "dark" ? "Dark Logo" : "Light Logo";
+  const handleCartOpen = () => {
+    setShowCart(true);
+  };
 
   return (
     <header>
@@ -150,7 +157,31 @@ function Header({ theme, toggleTheme }) {
           className="d-flex align-items-center"
           style={{ gap: "12px", marginRight: "16px" }}
         >
+          <div className="d-flex align-items-center">
+            <button
+              type="button"
+              className="btn position-relative"
+              onClick={handleCartOpen}
+              aria-label="Open Cart"
+            >
+              <span className="header-cart-icon-wrap">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="header-cart-icon"
+                  aria-hidden="true"
+                >
+                  <path d="M7 4H4v2h1.35l2.52 8.4A2 2 0 0 0 9.79 16H18a2 2 0 0 0 1.88-1.32L22 9H8.27l-.6-2H7Zm3 16a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm8 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
+                </svg>
+              </span>
+              {itemsCount > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {itemsCount}
+                </span>
+              )}
+            </button>
+          </div>
           <Switch checked={theme === "dark"} onChange={toggleTheme} />
+          <CartDrawer open={showCart} onClose={() => setShowCart(false)} theme={theme} />
         </div>
       </nav>
     </header>

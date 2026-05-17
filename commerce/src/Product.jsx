@@ -3,6 +3,7 @@ import Loading from "./components/Loading";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import {useCart} from "./context/CartContext";
 
 function Products() {
   const [, setProducts] = useState([]);
@@ -10,6 +11,7 @@ function Products() {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { addToCart } = useCart();
 
   // Get category from navigation state
   const selectedCategory = location.state?.selectedCategory;
@@ -90,6 +92,12 @@ function Products() {
                     </span>
                     <button className="btn btn-outline-primary btn-sm rounded-pill">
                       View Details
+                    </button>
+                    <button className="btn btn-primary btn-sm rounded-pill" onClick={(e)=>{
+                      e.stopPropagation();
+                      addToCart(product);
+                    }}>
+                      Add to Cart
                     </button>
                   </div>
                 </div>

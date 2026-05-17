@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import fakeApi from "../api/FakeApi";
 import Loading from "../components/Loading";
+import { useCart } from "../context/CartContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -10,6 +11,7 @@ const ProductDetails = () => {
   const [similarProducts, setSimilarProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState("");
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const getProductData = async () => {
@@ -39,6 +41,9 @@ const ProductDetails = () => {
   }, [id]);
 
   console.log("Product ID:", id);
+  const handleAddToCart = () =>{
+    addToCart(product);
+  }
 
   if (loading) return <Loading />;
   if (!product)
@@ -132,7 +137,7 @@ const ProductDetails = () => {
           </div>
 
           <div className="d-flex gap-2">
-            <button className="btn btn-primary btn-lg rounded-pill shadow-sm flex-grow-1">
+            <button className="btn btn-primary btn-lg rounded-pill shadow-sm flex-grow-1" onClick={handleAddToCart}>
               <i className="bi bi-cart-plus me-2"></i>Add to Cart
             </button>
             <button className="btn btn-outline-danger btn-lg rounded-pill shadow-sm flex-grow-1">
