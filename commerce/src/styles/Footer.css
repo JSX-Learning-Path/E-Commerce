@@ -1,6 +1,5 @@
 @media (max-width: 1000px) {
   .footer-container {
-    outline: 2px solid red;
     display: flex !important;
     justify-content: space-between;
     flex-direction: column !important;
@@ -29,7 +28,9 @@
     width: 50% !important;
   }
   .footer-links {
+    font-size: 15px;
   }
   .image-location {
+    margin-left: 0;
   }
 }

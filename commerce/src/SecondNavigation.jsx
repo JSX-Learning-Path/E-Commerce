@@ -12,10 +12,10 @@ function SecondNavigation() {
     { name: "Auto and Moto", slug: "automotive" },
   ];
   return (
-    <nav className=" py-3 ">
+    <nav className="py-3 ">
       <div className="d-flex justify-content-center ">
-        <ul className="nav gap-2 flex-wrap py-2 bg-danger mt-3 d-inline-flex rounded ">
-          <li>
+        <ul className="nav gap-2 flex-wrap py-2 bg-light mt-3 d-inline-flex rounded ">
+          {/* <li>
             <NavLink
               to="/products"
               end
@@ -23,7 +23,7 @@ function SecondNavigation() {
             >
               Products
             </NavLink>
-          </li>
+          </li> */}
           {categories.map((cat) => (
             <li key={cat.slug} className="nav-item">
               <NavLink

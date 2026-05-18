@@ -25,7 +25,7 @@ function CartDrawer({ open, onClose, theme = "light" }) {
     updateQuantity,
     clearCart,
     itemsCount,
-    subTotal, // промяна тук
+    subTotal, 
     shipping,
     total,
   } = useCart();

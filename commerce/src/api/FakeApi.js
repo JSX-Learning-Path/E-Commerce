@@ -2,7 +2,7 @@ import { ThemeProvider } from "styled-components";
 
 const BASE = "https://dummyjson.com";
 
-async function fetchProducts() {
+export async function fetchProducts() {
   try {
     const response = await fetch(`${BASE}/products?limit=200`);
     if (!response.ok) {

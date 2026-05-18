@@ -3,7 +3,7 @@ import Loading from "./components/Loading";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {useCart} from "./context/CartContext";
+import { useCart } from "./context/CartContext";
 
 function Products() {
   const [, setProducts] = useState([]);
@@ -45,7 +45,7 @@ function Products() {
   }, [selectedCategory, onSale]);
 
   return (
-    <div className="container py-4">
+    <div className="container py-4 ">
       <h2 className="mb-4 text-capitalize">
         {selectedCategory ? `${selectedCategory} Collection` : "All Products"}
       </h2>
@@ -71,7 +71,7 @@ function Products() {
                     className="card-img-top"
                   />
                 </div>
-                <div className="card-body d-flex flex-column">
+                <div className="card-body d-flex flex-column ">
                   <h6 className="card-title fw-bold text-truncate">
                     {product.title}
                   </h6>
@@ -87,16 +87,19 @@ function Products() {
                     {product.description}
                   </p>
                   <div className="d-flex justify-content-between align-items-center mt-3">
-                    <span className="fw-bold text-primary">
+                    <span className="fw-bold text-primary ">
                       ${product.price}
                     </span>
-                    <button className="btn btn-outline-primary btn-sm rounded-pill">
+                    <button className="btn btn-outline-primary btn-sm rounded-pill ">
                       View Details
                     </button>
-                    <button className="btn btn-primary btn-sm rounded-pill" onClick={(e)=>{
-                      e.stopPropagation();
-                      addToCart(product);
-                    }}>
+                    <button
+                      className="btn btn-outline-danger btn-sm rounded-pill "
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product);
+                      }}
+                    >
                       Add to Cart
                     </button>
                   </div>

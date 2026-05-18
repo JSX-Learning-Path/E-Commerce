@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./styles/SearchBar.css";
+import { GoSearch } from "react-icons/go";
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,19 +25,16 @@ function SearchBar() {
 
   return (
     <div>
-      <div className="search-form  relative" style={{ maxWidth: "450px" }}>
+      <div className="search-form d-flex align-items-center gap-2 position-relative">
         <input
           type="text"
+          placeholder="Search products..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="form-control search-input w-450"
+          className="form-control search-input transition focus-shadow"
+          style={{ paddingRight: "2.5rem" }} 
         />
-        <button
-          type="submit"
-          className="btn btn-primary rounded-pill px-4 search-button"
-        >
-          Search
-        </button>
+        <GoSearch className="search-icon-inside" />
       </div>
       {/* {loading && <p>Loading...</p>} */}
       {!loading && searchTerm && products.length > 0 && (
