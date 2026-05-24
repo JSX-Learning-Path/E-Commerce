@@ -104,6 +104,7 @@ export function WhishListProvider({ children }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useWishList() {
   const context = useContext(WishListContext);
   if (!context) {
