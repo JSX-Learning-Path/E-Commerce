@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import fakeApi from "../api/FakeApi";
 import Loading from "../components/Loading";
 import { useCart } from "../context/CartContext";
+import { useWishList } from "../context/WishContext";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -12,6 +13,9 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
   const [activeImage, setActiveImage] = useState("");
   const { addToCart } = useCart();
+  const wishListContext = useWishList();
+  const toggleWishList = wishListContext?.toggleWishList;
+  const isInWishList = wishListContext?.isInWishList || (() => false);
 
   useEffect(() => {
     const getProductData = async () => {
@@ -37,13 +41,22 @@ const ProductDetails = () => {
       }
     };
     getProductData();
-    window.scrollTo(0, 0); // Scroll to top on id change
+    window.scrollTo(0, 0); 
   }, [id]);
 
-  console.log("Product ID:", id);
-  const handleAddToCart = () =>{
+  const handleAddToCart = () => {
     addToCart(product);
-  }
+  };
+  const handleToggleWishList = () => {
+    if (!product) {
+      return;
+    }
+    if (typeof toggleWishList === "function") {
+      toggleWishList(product);
+    } else {
+      console.warn("toggleWishList не е дефинирана функция в WishContext!");
+    }
+  };
 
   if (loading) return <Loading />;
   if (!product)
@@ -137,11 +150,32 @@ const ProductDetails = () => {
           </div>
 
           <div className="d-flex gap-2">
-            <button className="btn btn-primary btn-lg rounded-pill shadow-sm flex-grow-1" onClick={handleAddToCart}>
+            <button
+              className="btn btn-primary btn-lg rounded-pill shadow-sm flex-grow-1"
+              onClick={handleAddToCart}
+            >
               <i className="bi bi-cart-plus me-2"></i>Add to Cart
             </button>
-            <button className="btn btn-outline-danger btn-lg rounded-pill shadow-sm flex-grow-1">
-              <i className="bi bi-heart me-2"></i>Like
+            <button
+              className={`btn btn-lg rounded-pill shadow-sm flex-grow-1 d-inline-flex align-items-center justify-content-center gap-2 ${isInWishList(product?.id) ? "btn-danger" : "btn-outline-danger"}`}
+              onClick={handleToggleWishList}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill={isInWishList(product?.id) ? "currentColor" : "none"}
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 20.4 4.9 13.6A4.8 4.8 0 0 1 11.8 7l.2.2.2-.2a4.8 4.8 0 0 1 6.9 6.6L12 20.4Z"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>{isInWishList(product?.id) ? "Liked" : "Like"}</span>
             </button>
           </div>
         </div>

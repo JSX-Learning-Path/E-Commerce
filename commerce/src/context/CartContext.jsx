@@ -3,6 +3,7 @@ import {
   addToCart as apiAddToCart,
   getCartItems as apiGetCartItems,
   removeFromCart as apiRemoveFromCart,
+  updateCartItem as apiUpdateCartItem,
   clearCart as apiClearCart,
 } from "../api/cartApi";
 import { useAuth } from "./AuthContext";
@@ -14,6 +15,7 @@ const CART_STORAGE_KEY = "commerce-cart";
 function toCartItem(product) {
   return {
     id: product.id,
+    product_id: product.id,
     title: product.title,
     thumbnail: product.thumbnail,
     price: Number(product.price) || 0,
@@ -21,6 +23,10 @@ function toCartItem(product) {
     brand: product.brand || "",
     quantity: 1,
   };
+}
+
+function getProductId(cartItem) {
+  return cartItem.product_id ?? cartItem.id;
 }
 
 export function CartProvider({ children }) {
@@ -47,18 +53,22 @@ export function CartProvider({ children }) {
   }, [cartItems]);
 
   useEffect(() => {
-    fetchProducts().then(setProducts).catch(() => setProducts([]));
+    fetchProducts()
+      .then(setProducts)
+      .catch(() => setProducts([]));
   }, []);
 
-  const addToCart = (product) => {
+  const addToCartLocally = (product) => {
     const cartItem = toCartItem(product);
 
     setCartItems((currentItems) => {
-      const existingItem = currentItems.find((item) => item.id === cartItem.id);
+      const existingItem = currentItems.find(
+        (item) => String(getProductId(item)) === String(cartItem.product_id),
+      );
 
       if (existingItem) {
         return currentItems.map((item) =>
-          item.id === cartItem.id
+          String(getProductId(item)) === String(cartItem.product_id)
             ? { ...item, quantity: item.quantity + 1 }
             : item,
         );
@@ -68,20 +78,25 @@ export function CartProvider({ children }) {
     });
   };
 
-  const removeFromCart = (productId) => {
+  const removeFromCartLocally = (productId) => {
     setCartItems((currentItems) => {
-      return currentItems.filter((item) => item.id !== productId);
+      return currentItems.filter(
+        (item) => String(getProductId(item)) !== String(productId),
+      );
     });
   };
 
-  const updateCartItemQuantity = (productId, nextQuantity) => {
+  const updateCartItemQuantityLocally = (productId, nextQuantity) => {
     if (nextQuantity <= 0) {
-      removeFromCart(productId);
+      removeFromCartLocally(productId);
       return;
     }
+
     setCartItems((currentItems) => {
       return currentItems.map((item) =>
-        item.id === productId ? { ...item, quantity: nextQuantity } : item,
+        String(getProductId(item)) === String(productId)
+          ? { ...item, quantity: nextQuantity }
+          : item,
       );
     });
   };
@@ -89,13 +104,21 @@ export function CartProvider({ children }) {
 
   const mergedCartItems = useMemo(() => {
     return cartItems.map((cartItem) => {
-      // Ако cartItem има само product_id и quantity
-      const product = products.find(
-        (p) => String(p.id) === String(cartItem.product_id),
-      );
+      const productId = getProductId(cartItem);
+      const product = products.find((p) => String(p.id) === String(productId));
+
       return {
+        ...product,
         ...cartItem,
-        ...product, // добавя title, price, thumbnail и т.н.
+        id: productId,
+        product_id: productId,
+        cart_item_id: cartItem.cart_item_id ?? cartItem.id,
+        title: cartItem.title || product?.title || "",
+        thumbnail: cartItem.thumbnail || product?.thumbnail || "",
+        price: Number(cartItem.price ?? product?.price ?? 0),
+        category: cartItem.category || product?.category || "",
+        brand: cartItem.brand || product?.brand || "",
+        quantity: Number(cartItem.quantity) || 1,
       };
     });
   }, [cartItems, products]);
@@ -116,32 +139,58 @@ export function CartProvider({ children }) {
 
   const handleAddToCart = async (product) => {
     if (!user) return;
-    await apiAddToCart(user.id, product);
-    const updated = await apiGetCartItems(user.id);
-    setCartItems(updated);
+    addToCartLocally(product);
+
+    try {
+      await apiAddToCart(user.id, product);
+      const updated = await apiGetCartItems(user.id);
+      setCartItems(updated);
+    } catch (error) {
+      console.error("Failed to add cart item:", error);
+      const updated = await apiGetCartItems(user.id).catch(() => []);
+      setCartItems(updated);
+    }
   };
 
   const handleRemoveFromCart = async (productId) => {
     if (!user) return;
-    // намери cartItem по productId
-    const item = cartItems.find((i) => i.product_id === productId);
+    const previousItems = cartItems;
+    removeFromCartLocally(productId);
+
+    const item = previousItems.find(
+      (currentItem) => String(getProductId(currentItem)) === String(productId),
+    );
     if (!item) return;
-    await apiRemoveFromCart(item.id);
-    const updated = await apiGetCartItems(user.id);
-    setCartItems(updated);
+
+    try {
+      await apiRemoveFromCart(item.id);
+    } catch (error) {
+      console.error("Failed to remove cart item:", error);
+      setCartItems(previousItems);
+    }
   };
 
   const handleUpdateCartItemQuantity = async (productId, nextQuantity) => {
     if (!user) return;
-    const item = cartItems.find((i) => i.product_id === productId);
+    const previousItems = cartItems;
+    updateCartItemQuantityLocally(productId, nextQuantity);
+
+    const item = previousItems.find(
+      (currentItem) => String(getProductId(currentItem)) === String(productId),
+    );
     if (!item) return;
-    if (nextQuantity <= 0) {
-      await apiRemoveFromCart(item.id);
-    } else {
-      await updateCartItem(item.id, nextQuantity);
+
+    try {
+      if (nextQuantity <= 0) {
+        await apiRemoveFromCart(item.id);
+        return;
+      }
+
+      await apiUpdateCartItem(item.id, nextQuantity);
+    } catch (error) {
+      console.error("Failed to update cart quantity:", error);
+      setCartItems(previousItems);
     }
-    const updated = await apiGetCartItems(user.id);
-    setCartItems(updated);
   };
 
   const handleClearCart = async () => {

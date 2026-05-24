@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PaymentCard from "./PaymentCard";
 import { useCart } from "../context/CartContext";
+// import { useOrders } from "../context/OrdersContext";
+
 
 const initialCheckoutState = {
   fullName: "",
@@ -22,13 +24,14 @@ function CartDrawer({ open, onClose, theme = "light" }) {
   const {
     cartItems,
     removeFromCart,
-    updateQuantity,
+    updateCartItemQuantity,
     clearCart,
     itemsCount,
-    subTotal, 
+    subTotal,
     shipping,
     total,
   } = useCart();
+  // const { createOrder } = useOrders();
   const [step, setStep] = useState("cart");
   const [checkoutData, setCheckoutData] = useState(initialCheckoutState);
   const [orderPlaced, setOrderPlaced] = useState(false);
@@ -121,7 +124,12 @@ function CartDrawer({ open, onClose, theme = "light" }) {
         return;
       }
 
-      if (expiryDigits.length < 4 || Number.isNaN(expiryMonth) || expiryMonth < 1 || expiryMonth > 12) {
+      if (
+        expiryDigits.length < 4 ||
+        Number.isNaN(expiryMonth) ||
+        expiryMonth < 1 ||
+        expiryMonth > 12
+      ) {
         window.alert("Please enter a valid expiry date in MM/YY format.");
         return;
       }
@@ -132,13 +140,27 @@ function CartDrawer({ open, onClose, theme = "light" }) {
       }
     }
 
+    createOrder({
+      items: cartItems,
+      checkoutData,
+      totals: {
+        itemsCount,
+        subTotal,
+        shipping,
+        total,
+      },
+    });
+
     clearCart();
     setCheckoutData(initialCheckoutState);
     setOrderPlaced(true);
     setStep("success");
   };
 
-  const panelClass = theme === "dark" ? "cart-panel cart-panel-dark" : "cart-panel cart-panel-light";
+  const panelClass =
+    theme === "dark"
+      ? "cart-panel cart-panel-dark"
+      : "cart-panel cart-panel-light";
 
   return (
     <>
@@ -148,9 +170,18 @@ function CartDrawer({ open, onClose, theme = "light" }) {
           <div>
             <p className="text-uppercase small mb-1 cart-eyebrow">Bag</p>
             <h4 className="mb-1">Your cart</h4>
-            <p className="text-muted mb-0 small">{itemsCount} item{itemsCount === 1 ? "" : "s"} selected</p>
+            <p className="text-muted mb-0 small">
+              {itemsCount} item{itemsCount === 1 ? "" : "s"} selected
+            </p>
           </div>
-          <button type="button" className="btn btn-outline-secondary rounded-circle cart-close-btn" onClick={onClose} aria-label="Close cart">×</button>
+          <button
+            type="button"
+            className="btn btn-outline-secondary rounded-circle cart-close-btn"
+            onClick={onClose}
+            aria-label="Close cart"
+          >
+            ×
+          </button>
         </div>
 
         {step === "cart" && (
@@ -169,41 +200,103 @@ function CartDrawer({ open, onClose, theme = "light" }) {
                         }}
                       >
                         <div className="cart-item-thumb-wrap">
-                          <img src={item.thumbnail} alt={item.title} className="cart-item-thumb" />
+                          <img
+                            src={item.thumbnail}
+                            alt={item.title}
+                            className="cart-item-thumb"
+                          />
                         </div>
                         <div className="flex-grow-1 text-start overflow-hidden">
                           <div className="d-flex justify-content-between align-items-start gap-2 mb-1">
                             <h6 className="mb-0 text-truncate">{item.title}</h6>
-                            <span className="badge text-bg-primary rounded-pill">${(item.price * item.quantity).toFixed(2)}</span>
+                            <span className="badge text-bg-primary rounded-pill">
+                              ${(item.price * item.quantity).toFixed(2)}
+                            </span>
                           </div>
-                          <p className="small text-muted mb-1 text-capitalize">{item.category}{item.brand ? ` • ${item.brand}` : ""}</p>
+                          <p className="small text-muted mb-1 text-capitalize">
+                            {item.category}
+                            {item.brand ? ` • ${item.brand}` : ""}
+                          </p>
                           <div className="d-flex align-items-center gap-2 mt-2">
-                            <button type="button" className="btn btn-sm btn-outline-secondary rounded-pill" onClick={(event) => { event.stopPropagation(); updateQuantity(item.id, item.quantity - 1); }}>-</button>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-outline-secondary rounded-pill"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                updateCartItemQuantity(
+                                  item.id,
+                                  item.quantity - 1,
+                                );
+                              }}
+                            >
+                              -
+                            </button>
                             <span className="fw-semibold">{item.quantity}</span>
-                            <button type="button" className="btn btn-sm btn-outline-secondary rounded-pill" onClick={(event) => { event.stopPropagation(); updateQuantity(item.id, item.quantity + 1); }}>+</button>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-outline-secondary rounded-pill"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                updateCartItemQuantity(
+                                  item.id,
+                                  item.quantity + 1,
+                                );
+                              }}
+                            >
+                              +
+                            </button>
                           </div>
                         </div>
                       </button>
-                      <button type="button" className="btn btn-sm btn-outline-danger rounded-pill mt-3" onClick={() => removeFromCart(item.id)}>Remove</button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger rounded-pill mt-3"
+                        onClick={() => removeFromCart(item.id)}
+                      >
+                        Remove
+                      </button>
                     </div>
                   ))}
                 </div>
 
                 <div className="cart-summary-card mt-4">
-                  <div className="d-flex justify-content-between mb-2"><span>Subtotal</span><strong>${subTotal.toFixed(2)}</strong></div>
-                  <div className="d-flex justify-content-between mb-2"><span>Shipping</span><strong>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</strong></div>
-                  <div className="d-flex justify-content-between pt-3 border-top"><span className="fw-semibold">Total</span><strong className="fs-5 text-primary">${total.toFixed(2)}</strong></div>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Subtotal</span>
+                    <strong>${subTotal.toFixed(2)}</strong>
+                  </div>
+                  <div className="d-flex justify-content-between mb-2">
+                    <span>Shipping</span>
+                    <strong>
+                      {shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}
+                    </strong>
+                  </div>
+                  <div className="d-flex justify-content-between pt-3 border-top">
+                    <span className="fw-semibold">Total</span>
+                    <strong className="fs-5 text-primary">
+                      ${total.toFixed(2)}
+                    </strong>
+                  </div>
                 </div>
 
-                <button type="button" className="btn btn-primary w-100 rounded-pill mt-4 py-3 fw-semibold" onClick={() => setStep("checkout")}>Order now</button>
+                <button
+                  type="button"
+                  className="btn btn-primary w-100 rounded-pill mt-4 py-3 fw-semibold"
+                  onClick={() => setStep("checkout")}
+                >
+                  Order now
+                </button>
               </>
             ) : (
               <div className="cart-empty-state text-center">
                 <div className="cart-empty-icon mb-3">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h-2l-1 2v2h2l2.6 7.59-1.35 2.44A1 1 0 0 0 8.75 20h10.5v-2h-9.9l1.1-2h7.45a2 2 0 0 0 1.79-1.11L22 8H8.42l-.94-2ZM10 22a1.5 1.5 0 1 0 .001-3.001A1.5 1.5 0 0 0 10 22Zm8 0a1.5 1.5 0 1 0 .001-3.001A1.5 1.5 0 0 0 18 22Z" /></svg>
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 4h-2l-1 2v2h2l2.6 7.59-1.35 2.44A1 1 0 0 0 8.75 20h10.5v-2h-9.9l1.1-2h7.45a2 2 0 0 0 1.79-1.11L22 8H8.42l-.94-2ZM10 22a1.5 1.5 0 1 0 .001-3.001A1.5 1.5 0 0 0 10 22Zm8 0a1.5 1.5 0 1 0 .001-3.001A1.5 1.5 0 0 0 18 22Z" />
+                  </svg>
                 </div>
                 <h5>Your cart is empty</h5>
-                <p className="text-muted mb-0">Add products and they will appear here instantly.</p>
+                <p className="text-muted mb-0">
+                  Add products and they will appear here instantly.
+                </p>
               </div>
             )}
           </div>
@@ -211,16 +304,71 @@ function CartDrawer({ open, onClose, theme = "light" }) {
 
         {step === "checkout" && (
           <form className="cart-panel-body" onSubmit={handlePlaceOrder}>
-            <button type="button" className="btn btn-link px-0 mb-2 text-decoration-none" onClick={() => setStep("cart")}>← Back to cart</button>
+            <button
+              type="button"
+              className="btn btn-link px-0 mb-2 text-decoration-none"
+              onClick={() => setStep("cart")}
+            >
+              ← Back to cart
+            </button>
             <div className="checkout-section">
               <h5 className="mb-3">Delivery details</h5>
               <div className="row g-3">
-                <div className="col-12"><input className="form-control form-control-lg rounded-4" name="fullName" placeholder="Full name" value={checkoutData.fullName} onChange={handleFieldChange} /></div>
-                <div className="col-12 col-md-6"><input className="form-control form-control-lg rounded-4" name="phone" placeholder="Phone number" value={checkoutData.phone} onChange={handleFieldChange} /></div>
-                <div className="col-12 col-md-6"><input className="form-control form-control-lg rounded-4" name="postalCode" placeholder="Postal code" value={checkoutData.postalCode} onChange={handleFieldChange} /></div>
-                <div className="col-12"><input className="form-control form-control-lg rounded-4" name="city" placeholder="City" value={checkoutData.city} onChange={handleFieldChange} /></div>
-                <div className="col-12"><input className="form-control form-control-lg rounded-4" name="address" placeholder="Address" value={checkoutData.address} onChange={handleFieldChange} /></div>
-                <div className="col-12"><textarea className="form-control rounded-4" rows="3" name="notes" placeholder="Notes for courier (optional)" value={checkoutData.notes} onChange={handleFieldChange}></textarea></div>
+                <div className="col-12">
+                  <input
+                    className="form-control form-control-lg rounded-4"
+                    name="fullName"
+                    placeholder="Full name"
+                    value={checkoutData.fullName}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="col-12 col-md-6">
+                  <input
+                    className="form-control form-control-lg rounded-4"
+                    name="phone"
+                    placeholder="Phone number"
+                    value={checkoutData.phone}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="col-12 col-md-6">
+                  <input
+                    className="form-control form-control-lg rounded-4"
+                    name="postalCode"
+                    placeholder="Postal code"
+                    value={checkoutData.postalCode}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="col-12">
+                  <input
+                    className="form-control form-control-lg rounded-4"
+                    name="city"
+                    placeholder="City"
+                    value={checkoutData.city}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="col-12">
+                  <input
+                    className="form-control form-control-lg rounded-4"
+                    name="address"
+                    placeholder="Address"
+                    value={checkoutData.address}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className="col-12">
+                  <textarea
+                    className="form-control rounded-4"
+                    rows="3"
+                    name="notes"
+                    placeholder="Notes for courier (optional)"
+                    value={checkoutData.notes}
+                    onChange={handleFieldChange}
+                  ></textarea>
+                </div>
               </div>
             </div>
 
@@ -228,17 +376,35 @@ function CartDrawer({ open, onClose, theme = "light" }) {
               <h5 className="mb-3">Payment</h5>
               <div className="d-flex flex-column gap-3">
                 <label className="payment-option-card">
-                  <input type="radio" className="form-check-input" name="paymentMethod" value="cash" checked={checkoutData.paymentMethod === "cash"} onChange={handleFieldChange} />
+                  <input
+                    type="radio"
+                    className="form-check-input"
+                    name="paymentMethod"
+                    value="cash"
+                    checked={checkoutData.paymentMethod === "cash"}
+                    onChange={handleFieldChange}
+                  />
                   <span>
                     <strong>Cash on delivery</strong>
-                    <span className="d-block small text-muted">Pay when the courier arrives.</span>
+                    <span className="d-block small text-muted">
+                      Pay when the courier arrives.
+                    </span>
                   </span>
                 </label>
                 <label className="payment-option-card">
-                  <input type="radio" className="form-check-input" name="paymentMethod" value="card" checked={checkoutData.paymentMethod === "card"} onChange={handleFieldChange} />
+                  <input
+                    type="radio"
+                    className="form-check-input"
+                    name="paymentMethod"
+                    value="card"
+                    checked={checkoutData.paymentMethod === "card"}
+                    onChange={handleFieldChange}
+                  />
                   <span>
                     <strong>Card payment</strong>
-                    <span className="d-block small text-muted">Enter your card details below.</span>
+                    <span className="d-block small text-muted">
+                      Enter your card details below.
+                    </span>
                   </span>
                 </label>
               </div>
@@ -257,12 +423,30 @@ function CartDrawer({ open, onClose, theme = "light" }) {
             </div>
 
             <div className="cart-summary-card mt-4">
-              <div className="d-flex justify-content-between mb-2"><span>Subtotal</span><strong>${subTotal.toFixed(2)}</strong></div>
-              <div className="d-flex justify-content-between mb-2"><span>Shipping</span><strong>{shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}</strong></div>
-              <div className="d-flex justify-content-between pt-3 border-top"><span className="fw-semibold">Total</span><strong className="fs-5 text-primary">${total.toFixed(2)}</strong></div>
+              <div className="d-flex justify-content-between mb-2">
+                <span>Subtotal</span>
+                <strong>${subTotal.toFixed(2)}</strong>
+              </div>
+              <div className="d-flex justify-content-between mb-2">
+                <span>Shipping</span>
+                <strong>
+                  {shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}
+                </strong>
+              </div>
+              <div className="d-flex justify-content-between pt-3 border-top">
+                <span className="fw-semibold">Total</span>
+                <strong className="fs-5 text-primary">
+                  ${total.toFixed(2)}
+                </strong>
+              </div>
             </div>
 
-            <button type="submit" className="btn btn-success w-100 rounded-pill mt-4 py-3 fw-semibold">Place order</button>
+            <button
+              type="submit"
+              className="btn btn-success w-100 rounded-pill mt-4 py-3 fw-semibold"
+            >
+              Place order
+            </button>
           </form>
         )}
 
@@ -270,8 +454,16 @@ function CartDrawer({ open, onClose, theme = "light" }) {
           <div className="cart-empty-state text-center">
             <div className="cart-success-icon mb-3">✓</div>
             <h5>Order placed successfully</h5>
-            <p className="text-muted">Your order was accepted and is ready for processing.</p>
-            <button type="button" className="btn btn-primary rounded-pill px-4" onClick={onClose}>Continue shopping</button>
+            <p className="text-muted">
+              Your order was accepted and is ready for processing.
+            </p>
+            <button
+              type="button"
+              className="btn btn-primary rounded-pill px-4"
+              onClick={onClose}
+            >
+              Continue shopping
+            </button>
           </div>
         )}
 

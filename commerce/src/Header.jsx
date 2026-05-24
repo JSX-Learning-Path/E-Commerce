@@ -1,189 +1,364 @@
 import React from "react";
-import { FaHome, FaBoxOpen, FaInfoCircle, FaEnvelope } from "react-icons/fa";
+import { FaBoxOpen, FaInfoCircle, FaEnvelope } from "react-icons/fa";
 import { IoLogIn } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import Login from "./Login";
 import { useAuth } from "./context/AuthContext";
 import { supabase } from "./js/main";
-import { useState } from "react";
 import Switch from "./components/Switch";
 import SearchBar from "./SearchBar";
 import { useCart } from "./context/CartContext";
 import CartDrawer from "./components/CartDrawer";
+import WishListDrawer from "./components/WishListDrawer";
+// import WishListDrawer from "./components/WishListDrawer";
+// import { useWishList } from "./context/WishContext";
+import { useWishList } from "./context/WishContext";
 
 function Header({ theme, toggleTheme }) {
-  const [loading, setLoading] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [showCart, setShowCart] = useState(false);
-  const { addToCart, itemsCount } = useCart();
-
+  const [showCart, setShowCart] = React.useState(false);
+  const [showWishList, setShowWishList] = React.useState(false);
+  const { itemsCount } = useCart();
+  const { wishListCount } = useWishList();
   const { user } = useAuth();
-
-  function handleBlur() {
-    setTimeout(() => {
-      setShowResults(false);
-    }, 10);
-  }
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
   };
 
-  // Choose logo based on the theme
   const logoSrc = theme === "dark" ? "/logo-dark.png" : "/logo-light.png";
   const logoAlt = theme === "dark" ? "Dark Logo" : "Light Logo";
-  const handleCartOpen = () => {
-    setShowCart(true);
-  };
+  const displayName =
+    user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email;
 
   return (
-    <header>
-      <nav
-        className={`navbar navbar-expand-lg ${theme === "dark" ? "bg-dark" : "bg-light"}`}
-      >
-        <div className="container">
-          <Link
-            to="/"
-            className="navbar-brand text-white text-decoration-none d-flex align-items-center justify-content-center"
-            style={{ gap: "8px" }}
-          >
-            <img src={logoSrc} alt={logoAlt} style={{ height: "42px" }} />
-            <style>{`
-              .header-logo {
-                max-height: 70px;
-                min-height: 70px;
-                width: auto;
-                display: block;
-              }
-              .header-fixed-height {
-                min-height: 70px;
-                display: flex;
-                align-items: center !important;
-              }
-              .custom-blue-dark {
-                background: linear-gradient(90deg, #181e3a 0%, #22306b 100%) !important;
-                border-bottom: 2px solid #1e293b;
-              }
-            `}</style>
+    <header className={`site-header site-header-${theme}`}>
+      <style>{`
+        .site-header {
+          position: sticky;
+          top: 0;
+          z-index: 1040;
+          backdrop-filter: blur(18px);
+          border-bottom: 1px solid ${theme === "dark"
+            ? "rgba(148, 163, 184, 0.16)"
+            : "rgba(15, 23, 42, 0.08)"};
+          background: ${theme === "dark"
+            ? "linear-gradient(180deg, rgba(15, 23, 42, 0.94) 0%, rgba(17, 24, 39, 0.9) 100%)"
+            : "linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.9) 100%)"};
+        }
+
+        .header-shell {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+          padding: 0.9rem 0;
+        }
+
+        .header-brand {
+          display: inline-flex;
+          align-items: center;
+          flex: 0 0 auto;
+        }
+
+        .header-brand img {
+          height: 52px;
+          width: auto;
+          display: block;
+        }
+
+        .header-search {
+          flex: 1 1 340px;
+          min-width: min(100%, 280px);
+        }
+
+        .header-nav {
+          display: flex;
+          align-items: center;
+          gap: 0.35rem;
+          flex-wrap: wrap;
+        }
+
+        .header-nav-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+          padding: 0.75rem 1rem;
+          border-radius: 999px;
+          color: ${theme === "dark" ? "#e2e8f0" : "#0f172a"};
+          text-decoration: none;
+          font-weight: 600;
+          transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .header-nav-link:hover {
+          background: ${theme === "dark"
+            ? "rgba(30, 41, 59, 0.92)"
+            : "rgba(226, 232, 240, 0.78)"};
+          color: ${theme === "dark" ? "#ffffff" : "#020617"};
+          transform: translateY(-1px);
+        }
+
+        .header-utilities {
+          margin-left: auto;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          flex-wrap: wrap;
+        }
+
+        .header-profile-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.7rem;
+          min-height: 52px;
+          max-width: 360px;
+          padding: 0.75rem 1.1rem;
+          border-radius: 999px;
+          border: 1px solid ${theme === "dark"
+            ? "rgba(96, 165, 250, 0.32)"
+            : "rgba(37, 99, 235, 0.26)"};
+          background: ${theme === "dark"
+            ? "rgba(30, 41, 59, 0.86)"
+            : "rgba(255, 255, 255, 0.88)"};
+          color: ${theme === "dark" ? "#bfdbfe" : "#2563eb"};
+          text-decoration: none;
+          font-weight: 600;
+          box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .header-profile-link:hover {
+          transform: translateY(-1px);
+        }
+
+        .header-profile-text {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .header-action-btn,
+        .header-signout-btn {
+          width: 52px;
+          height: 52px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 18px;
+          box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
+        }
+
+        .header-action-btn {
+          border: 1px solid rgba(148, 163, 184, 0.2);
+          background: ${theme === "dark"
+            ? "rgba(30, 41, 59, 0.92)"
+            : "rgba(255, 255, 255, 0.92)"};
+          color: ${theme === "dark" ? "#f8fafc" : "#0f172a"};
+        }
+
+        .header-signout-btn {
+          border: 1px solid rgba(248, 113, 113, 0.28);
+          background: ${theme === "dark"
+            ? "rgba(127, 29, 29, 0.24)"
+            : "rgba(254, 242, 242, 0.92)"};
+          color: ${theme === "dark" ? "#fecaca" : "#b91c1c"};
+        }
+
+        .header-action-btn:hover,
+        .header-signout-btn:hover {
+          transform: translateY(-1px);
+        }
+
+        .header-icon-svg {
+          width: 28px;
+          height: 28px;
+          display: block;
+          color: inherit;
+          fill: none;
+          stroke: currentColor;
+          stroke-width: 1.9;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        .header-icon-heart {
+          fill: currentColor;
+          stroke: none;
+        }
+
+        .header-auth-links {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.6rem;
+          flex-wrap: wrap;
+        }
+
+        .header-auth-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.55rem;
+          min-height: 48px;
+          padding: 0.75rem 1rem;
+          border-radius: 999px;
+          text-decoration: none;
+          font-weight: 600;
+          color: ${theme === "dark" ? "#f8fafc" : "#0f172a"};
+          background: ${theme === "dark"
+            ? "rgba(30, 41, 59, 0.88)"
+            : "rgba(255, 255, 255, 0.9)"};
+          border: 1px solid rgba(148, 163, 184, 0.16);
+        }
+
+        @media (max-width: 1199px) {
+          .header-nav {
+            order: 3;
+            width: 100%;
+          }
+
+          .header-utilities {
+            margin-left: 0;
+          }
+        }
+
+        @media (max-width: 767px) {
+          .header-shell {
+            gap: 0.85rem;
+          }
+
+          .header-brand img {
+            height: 46px;
+          }
+
+          .header-search,
+          .header-nav,
+          .header-utilities {
+            width: 100%;
+          }
+
+          .header-nav {
+            justify-content: center;
+          }
+
+          .header-utilities {
+            justify-content: space-between;
+          }
+
+          .header-profile-link {
+            max-width: calc(100% - 70px);
+            flex: 1 1 auto;
+          }
+        }
+      `}</style>
+
+      <div className="container">
+        <div className="header-shell">
+          <Link to="/" className="header-brand" aria-label="NexCart home">
+            <img src={logoSrc} alt={logoAlt} />
           </Link>
-          <SearchBar
-            products={[]}
-            onResults={(results) => {
-              console.log("Search results:", results);
-            }}
-          />
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav mb-2 mb-lg-0 w-100 justify-content-end align-items-center">
-              <li className="nav-item">
-                <Link
-                  to="/products"
-                  className="nav-link text-decoration-none d-flex align-items-center"
-                  style={{ gap: "6px" }}
-                >
-                  <FaBoxOpen size={20} /> Products
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  to="/about"
-                  className="nav-link text-decoration-none d-flex align-items-center"
-                  style={{ gap: "6px" }}
-                >
-                  <FaInfoCircle size={20} /> About
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  to="/contact"
-                  className="nav-link  text-decoration-none d-flex align-items-center"
-                  style={{ gap: "6px" }}
-                >
-                  <FaEnvelope size={20} /> Contact
-                </Link>
-              </li>
-              {user ? (
-                <>
-                  <li className="nav-item">
-                    <span className="nav-link ">Hey, {user.email}</span>
-                  </li>
-                  <li className="nav-item">
-                    <button
-                      className="btn bg-dark opacity-75"
-                      onClick={handleLogout}
-                    >
-                      Signout
-                    </button>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className="nav-item">
-                    <Link
-                      to="/login"
-                      className="nav-link text-white text-decoration-none d-flex align-items-center"
-                      style={{ gap: "6px" }}
-                    >
-                      <IoLogIn size={20} />
-                      Login
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link
-                      to="/register"
-                      className="nav-link text-white text-decoration-none d-flex align-items-center"
-                      style={{ gap: "6px" }}
-                    >
-                      <IoLogIn size={20} />
-                      Register
-                    </Link>
-                  </li>
-                </>
-              )}
-            </ul>
+
+          <div className="header-search">
+            <SearchBar />
           </div>
-        </div>
-        <div
-          className="d-flex align-items-center"
-          style={{ gap: "12px", marginRight: "16px" }}
-        >
-          <div className="d-flex align-items-center">
+
+          <nav className="header-nav" aria-label="Primary navigation">
+            <Link to="/products" className="header-nav-link">
+              <FaBoxOpen size={18} /> Products
+            </Link>
+            <Link to="/about" className="header-nav-link">
+              <FaInfoCircle size={18} /> About
+            </Link>
+            <Link to="/contact" className="header-nav-link">
+              <FaEnvelope size={18} /> Contact
+            </Link>
+          </nav>
+
+          <div className="header-utilities">
+            {user ? (
+              <>
+                <Link to="/profile" className="header-profile-link">
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <circle cx="12" cy="8" r="3.5" fill="currentColor"></circle>
+                    <path
+                      d="M4.5 19a7.5 7.5 0 0 1 15 0"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      strokeLinecap="round"
+                    ></path>
+                  </svg>
+                  <span className="header-profile-text">Hey, {displayName}</span>
+                </Link>
+                <button
+                  type="button"
+                  className="btn header-signout-btn"
+                  onClick={handleLogout}
+                  aria-label="Sign out"
+                >
+                  <svg viewBox="0 0 24 24" className="header-icon-svg" aria-hidden="true">
+                    <path d="M14 7V5.5A1.5 1.5 0 0 0 12.5 4h-6A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20h6a1.5 1.5 0 0 0 1.5-1.5V17"></path>
+                    <path d="M10 12h9"></path>
+                    <path d="m16 8 4 4-4 4"></path>
+                  </svg>
+                </button>
+              </>
+            ) : (
+              <div className="header-auth-links">
+                <Link to="/login" className="header-auth-link">
+                  <IoLogIn size={18} /> Login
+                </Link>
+                <Link to="/register" className="header-auth-link">
+                  <IoLogIn size={18} /> Register
+                </Link>
+              </div>
+            )}
+
             <button
               type="button"
-              className="btn position-relative"
-              onClick={handleCartOpen}
+              className="btn position-relative header-action-btn"
+              onClick={() => setShowWishList(true)}
+              aria-label="Open Wishlist"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="header-icon-svg header-icon-heart"
+                aria-hidden="true"
+              >
+                <path d="M12 21.35 10.55 20C5.4 15.36 2 12.28 2 8.5A5.5 5.5 0 0 1 12 5.03 5.5 5.5 0 0 1 22 8.5c0 3.78-3.4 6.86-8.55 11.5L12 21.35Z" />
+              </svg>
+              {wishListCount > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {wishListCount}
+                </span>
+              )}
+            </button>
+
+            <button
+              type="button"
+              className="btn position-relative header-action-btn"
+              onClick={() => setShowCart(true)}
               aria-label="Open Cart"
             >
-              <span className="header-cart-icon-wrap">
-                <svg
-                  viewBox="0 0 24 24"
-                  className="header-cart-icon"
-                  aria-hidden="true"
-                >
-                  <path d="M7 4H4v2h1.35l2.52 8.4A2 2 0 0 0 9.79 16H18a2 2 0 0 0 1.88-1.32L22 9H8.27l-.6-2H7Zm3 16a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm8 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
-                </svg>
-              </span>
+              <svg viewBox="0 0 24 24" className="header-icon-svg" aria-hidden="true">
+                <circle cx="10" cy="19" r="1.6" fill="currentColor" stroke="none"></circle>
+                <circle cx="17.5" cy="19" r="1.6" fill="currentColor" stroke="none"></circle>
+                <path d="M3 4h2.4l1.7 8.1a1.8 1.8 0 0 0 1.8 1.4h8.1a1.8 1.8 0 0 0 1.7-1.2L20.5 7H7.2"></path>
+              </svg>
               {itemsCount > 0 && (
                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                   {itemsCount}
                 </span>
               )}
             </button>
+
+            <Switch checked={theme === "dark"} onChange={toggleTheme} />
           </div>
-          <Switch checked={theme === "dark"} onChange={toggleTheme} />
-          <CartDrawer open={showCart} onClose={() => setShowCart(false)} theme={theme} />
         </div>
-      </nav>
+      </div>
+
+      <WishListDrawer
+        open={showWishList}
+        onClose={() => setShowWishList(false)}
+        theme={theme}
+      />
+      <CartDrawer open={showCart} onClose={() => setShowCart(false)} theme={theme} />
     </header>
   );
 }
