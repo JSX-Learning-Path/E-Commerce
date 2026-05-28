@@ -5,84 +5,96 @@ import React, {
   useState,
   useMemo,
 } from "react";
+import {
+  addToWishList as apiAddToWishList,
+  getWishList as apiGetWishList,
+  removeFromWishList as apiRemoveFromWishList,
+  clearWishList as apiClearWishList,
+} from "../api/wishList";
+import { useAuth } from "./AuthContext";
+import { fetchProducts } from "../api/FakeApi";
 
 const WishListContext = createContext();
 
-const WISHLIST_STORAGE_KEY = "commerce-wishlist";
+export function WishListProvider({ children }) {
+  const { user } = useAuth();
+  // console.log("User from useAuth:", user);
+  const [wishListItemsRaw, setWishListItemsRaw] = useState([]);
+  const [products, setProducts] = useState([]);
 
-export function WhishListProvider({ children }) {
-  const [wishListItems, setWishListItems] = useState(() => {
-    try {
-      const storedItems = window.localStorage.getItem(WISHLIST_STORAGE_KEY);
-      return storedItems ? JSON.parse(storedItems) : [];
-    } catch (error) {
-      console.error("Failed to load wishlist items:", error);
-      return [];
-    }
-  });
   useEffect(() => {
-    try {
-      window.localStorage.setItem(
-        WISHLIST_STORAGE_KEY,
-        JSON.stringify(wishListItems),
-      );
-    } catch (error) {
-      console.error("Failed to save wishlist items:", error);
+    fetchProducts()
+      .then((data) => {
+        // console.log("Products from API:", data);
+        setProducts(data);
+      })
+      .catch(() => setProducts([]));
+  }, []);
+
+  useEffect(() => {
+    console.log("Current user id:", user?.id);
+    if (user) {
+      apiGetWishList(user.id).then((data) => {
+        console.log("Wish list items from Supabase:", data);
+        setWishListItemsRaw(data);
+      });
+    } else {
+      setWishListItemsRaw([]);
     }
-  }, [wishListItems]);
+  }, [user]);
 
-  const addToWishList = (product) => {
-    setWishListItems((currentItems) => {
-      const exists = currentItems.some(
-        (item) => String(item.id) === String(product.id),
+  useMemo(() => {
+    const merged = wishListItemsRaw.map((item) => {
+      const product = products.find(
+        (p) => String(p.id) === String(item.product_id),
       );
-      if (exists) return currentItems;
-      return [
-        {
-          id: product.id,
-          title: product.title,
-          price: Number(product.price) || 0,
-          thumbnail: product.thumbnail || "",
-          category: product.category || "",
-          brand: product.brand || "",
-          rating: product.rating || 0,
-        },
-        ...currentItems,
-      ];
-    });
-  };
-  const removeFromWishList = (productId) => {
-    setWishListItems((currentItems) =>
-      currentItems.filter((item) => String(item.id) !== String(productId)),
-    );
-  };
-
-  const clearWishList = () => setWishListItems([]);
-
-  const toggleWishList = (product) => {
-    setWishListItems((currentItems) => {
-      const exists = currentItems.some(
-        (item) => String(item.id) === String(product.id),
-      );
-      if (exists) {
-        return currentItems.filter(
-          (item) => String(item.id) !== String(product.id),
-        );
+      if (!product) {
+        console.log("No product found for wishlist item:", item);
       }
-      return [
-        {
-          id: product.id,
-          title: product.title,
-          price: Number(product.price) || 0,
-          thumbnail: product.thumbnail || "",
-          category: product.category || "",
-          brand: product.brand || "",
-          rating: product.rating || 0,
-        },
-        ...currentItems,
-      ];
+      return { ...item, ...product };
     });
+    // console.log("Merged wish list items:", merged);
+    return merged;
+  }, [wishListItemsRaw, products]);
+
+  const wishListItems = useMemo(() => {
+    return wishListItemsRaw.map((item) => {
+      const product = products.find(
+        (p) => String(p.id) === String(item.product_id),
+      );
+      return { ...item, ...product };
+    });
+  }, [wishListItemsRaw, products]);
+
+  const addToWishList = async (product) => {
+    await apiAddToWishList(user.id, product.id);
+    const updated = await apiGetWishList(user.id);
+    setWishListItemsRaw(updated);
   };
+
+  const removeFromWishList = async (productId) => {
+    await apiRemoveFromWishList(user.id, productId);
+    const updated = await apiGetWishList(user.id);
+    setWishListItemsRaw(updated);
+  };
+
+  const clearWishList = async () => {
+    await apiClearWishList(user.id);
+    setWishListItemsRaw([]);
+  };
+
+  const toggleWishList = async (product) => {
+    if (
+      wishListItems.some(
+        (item) => String(item.product_id) === String(product.id),
+      )
+    ) {
+      await removeFromWishList(product.id);
+    } else {
+      await addToWishList(product);
+    }
+  };
+
   const value = useMemo(
     () => ({
       wishListItems,
@@ -92,7 +104,9 @@ export function WhishListProvider({ children }) {
       clearWishList,
       toggleWishList,
       isInWishList: (productId) =>
-        wishListItems.some((item) => String(item.id) === String(productId)),
+        wishListItems.some(
+          (item) => String(item.product_id) === String(productId),
+        ),
     }),
     [wishListItems],
   );
@@ -104,11 +118,10 @@ export function WhishListProvider({ children }) {
   );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export function useWishList() {
   const context = useContext(WishListContext);
   if (!context) {
-    throw new Error("useWishlist must be used within a WishListProvider");
+    throw new Error("useWishList must be used within a WishListProvider");
   }
   return context;
 }

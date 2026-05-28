@@ -6,17 +6,17 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
-import { WhishListProvider } from "./context/WishContext";
+import { WishListProvider } from "./context/WishContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <WhishListProvider>
+        <WishListProvider>
           <CartProvider>
             <App />
           </CartProvider>
-        </WhishListProvider>
+        </WishListProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,

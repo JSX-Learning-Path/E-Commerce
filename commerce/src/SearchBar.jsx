@@ -32,11 +32,10 @@ function SearchBar() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="form-control search-input transition focus-shadow"
-          style={{ paddingRight: "2.5rem" }} 
+          style={{ paddingRight: "2.5rem" }}
         />
         <GoSearch className="search-icon-inside" />
       </div>
-      {/* {loading && <p>Loading...</p>} */}
       {!loading && searchTerm && products.length > 0 && (
         <ul className="search-results">
           {products.map((product) => (

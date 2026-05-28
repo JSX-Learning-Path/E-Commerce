@@ -15,15 +15,7 @@ function SecondNavigation() {
     <nav className="py-3 ">
       <div className="d-flex justify-content-center ">
         <ul className="nav gap-2 flex-wrap py-2 bg-light mt-3 d-inline-flex rounded ">
-          {/* <li>
-            <NavLink
-              to="/products"
-              end
-              className={({ isActive }) => (isActive ? "active" : "")}
-            >
-              Products
-            </NavLink>
-          </li> */}
+        
           {categories.map((cat) => (
             <li key={cat.slug} className="nav-item">
               <NavLink

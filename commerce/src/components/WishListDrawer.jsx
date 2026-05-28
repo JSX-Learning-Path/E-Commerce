@@ -7,6 +7,7 @@ function WishListDrawer({ open, onClose, theme = "light" }) {
   const navigate = useNavigate();
   const { wishListItems, removeFromWishList, clearWishList, wishListCount } =
     useWishList();
+  console.log("wishListItems in drawer:", wishListItems);
 
   if (!open) {
     return null;
@@ -42,8 +43,8 @@ function WishListDrawer({ open, onClose, theme = "light" }) {
         {wishListItems.length > 0 ? (
           <>
             <div className="d-flex flex-column gap-3">
-              {wishListItems.map((item) => (
-                <div key={item.id} className="wishlist-item-card">
+              {wishListItems.map((item, index) => (
+                <div key={item.product_id + "-" + index} className="wishlist-item-card">
                   <button
                     type="button"
                     className="wishlist-item-content"
@@ -76,13 +77,13 @@ function WishListDrawer({ open, onClose, theme = "light" }) {
                       </div>
                     </div>
                   </button>
-                  <button
-                    type="button"
-                    className="btn btn-sm btn-outline-danger rounded-pill mt-3"
-                    onClick={() => removeFromWishList(item.id)}
-                  >
-                    Remove
-                  </button>
+                   <button
+                     type="button"
+                     className="btn btn-sm btn-outline-danger rounded-pill mt-3"
+                     onClick={() => removeFromWishList(item.product_id)}
+                   >
+                     Remove
+                   </button>
                 </div>
               ))}
             </div>

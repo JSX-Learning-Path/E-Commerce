@@ -12,6 +12,7 @@ import Register from "./Register";
 import Home from "./view/Home";
 import Footer from "./Footer";
 import ProductDetails from "./view/ProductDetails";
+import { WishListProvider } from "./context/WishContext";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -22,24 +23,26 @@ function App() {
 
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
-      <GlobalStyle />
-      <Header theme={theme} toggleTheme={toggleTheme} />
-      {/* <Switch /> */}
-      <SecondNavigation />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/product/:id" element={<ProductDetails />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-      </Routes>
-      <Footer />
+      <WishListProvider>
+        <GlobalStyle />
+        <Header theme={theme} toggleTheme={toggleTheme} />
+        {/* <Switch /> */}
+        <SecondNavigation />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+        <Footer />
+      </WishListProvider>
     </ThemeProvider>
   );
 }
 
 export default App;
 
-// Saycheese_26666
+
