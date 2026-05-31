@@ -7,16 +7,19 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import { WishListProvider } from "./context/WishContext";
+import OrderProvider from "./context/OrderContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <WishListProvider>
-          <CartProvider>
-            <App />
-          </CartProvider>
-        </WishListProvider>
+        <OrderProvider>
+          <WishListProvider>
+            <CartProvider>
+              <App />
+            </CartProvider>
+          </WishListProvider>
+        </OrderProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,

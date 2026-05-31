@@ -13,6 +13,8 @@ import Home from "./view/Home";
 import Footer from "./Footer";
 import ProductDetails from "./view/ProductDetails";
 import { WishListProvider } from "./context/WishContext";
+import Profile from "./Profile";
+
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -36,6 +38,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
         <Footer />
       </WishListProvider>
