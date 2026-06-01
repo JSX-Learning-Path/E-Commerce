@@ -1,6 +1,7 @@
 import { CiLocationOn } from "react-icons/ci";
 import "./styles/Map.css";
 import "./styles/Footer.css";
+import { Link } from "react-router-dom";
 function Footer() {
   return (
     <div className="footer-container">
@@ -16,52 +17,52 @@ function Footer() {
             <div className="footer-links d-flex gap-3">
               <ul className="footer-links list-unstyled d-flex gap-3 border-top border-2 py-2">
                 <li>
-                  <a
-                    href="/about"
-                    className="text-decoration-none text-body-emphasis   link-warning"
+                  <Link
+                    to="/about"
+                    className="text-decoration-none text-body-emphasis ink-warning"
                   >
                     About
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/faq"
-                    className="text-decoration-none text-body-emphasis link-warning"
+                  <Link
+                    to="/faq"
+                    className="text-decoration-none text-body-emphasis ink-warning"
                   >
                     FAQ
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/contact"
-                    className="text-decoration-none text-body-emphasis link-warning"
+                  <Link
+                    to="/contact"
+                    className="text-decoration-none text-body-emphasis ink-warning"
                   >
                     Contact
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/privacy"
-                    className="text-decoration-none text-body-emphasis link-warning"
+                  <Link
+                    to="/privacy"
+                    className="text-decoration-none text-body-emphasis ink-warning"
                   >
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/terms"
-                    className="text-decoration-none text-body-emphasis link-warning"
+                  <Link
+                    to="/terms"
+                    className="text-decoration-none text-body-emphasis ink-warning"
                   >
                     Terms of Service
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/help"
-                    className="text-decoration-none text-body-emphasis link-warning"
+                  <Link
+                    to="/help"
+                    className="text-decoration-none text-body-emphasis ink-warning"
                   >
                     Help Center
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -84,7 +85,6 @@ function Footer() {
           </div>
         </div>
       </footer>
-      
     </div>
   );
 }
