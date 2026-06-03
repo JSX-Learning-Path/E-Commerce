@@ -5,6 +5,7 @@
   backdrop-filter: blur(50px);
 }
 h1 {
+  font-size: 55px;
   color: #0a0a0a;
   font-family: "Arial, sans-serif";
 }

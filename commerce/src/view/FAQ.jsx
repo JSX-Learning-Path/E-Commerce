@@ -11,11 +11,10 @@ function FAQ() {
   };
 
   return (
-    <div className=" mt-4 bg-light p-4 rounded ">
-      <p className="text-center text-black text-opacity-75">Find them here.</p>
+    <div className="mt-4 bg-light p-4 rounded width-300">
       <h2 className="text-dark text-center text-sm ">
         You have questions?{" "}
-        <span className="text-underline text-success opacity-75">
+        <span className="text-underline text-success opacity-75 text-sm">
           Find them here.
         </span>{" "}
       </h2>
@@ -24,14 +23,14 @@ function FAQ() {
         return (
           <div key={index} className="p-2 mb-1">
             <div
-              className="d-flex align-items-center justify-content-between text-muted text-sm text-underline"
+              className="d-flex align-items-center justify-content-between "
               onClick={() => toggleAnswer(index)}
               style={{ cursor: "pointer" }}
             >
-              <p className="text-muted mb-0">{item.question}</p>
+              <p className="text-muted mb-0 ">{item.question}</p>
               <IoIosArrowDown
-                className={`faq-arrow ${open ? "open" : ""} text-muted`}
-                style={{ transition: "transform 200ms" }}
+                className={`faq-arrow ${open ? "open" : ""} text-muted rounded`}
+                style={{ transition: "transform 200ms"}}
                 aria-hidden="true"
               />
             </div>

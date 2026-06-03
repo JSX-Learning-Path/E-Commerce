@@ -76,7 +76,7 @@ function Contact() {
   return (
     <div className="d-flex flex-column align-items-center bg-light min-vh-100">
       <h1 className="">Contact Us</h1>
-      <p>We'd Love to hear from you</p>
+      <p className="text-sm">We would  Love to hear from you</p>
       <div className="d-flex flex-column flex-lg-row mt-3 gap-5">
         <div className="card p-3 bg-light shadow-lg border-0">
           <h3 className="justify-content-center d-flex ">Send us a Message</h3>
@@ -122,8 +122,8 @@ function Contact() {
                 required
               />
             </div>
-            <div className="d-flex flex-column col-md-10 ">
-              <label htmlFor="message" className="mb-2">
+            <div className="d-flex flex-column col-md-20  ">
+              <label htmlFor="message" className="mb-2 ">
                 Message:
               </label>
               <textarea
