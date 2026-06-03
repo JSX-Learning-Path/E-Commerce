@@ -90,11 +90,11 @@ function Products() {
                     <span className="fw-bold text-primary ">
                       ${product.price}
                     </span>
-                    <button className="btn btn-outline-primary btn-sm rounded-pill ">
+                    <button className="btn btn-outline-primary btn-sm rounded-pill py-2 px-2  ">
                       View Details
                     </button>
                     <button
-                      className="btn btn-outline-danger btn-sm rounded-pill "
+                      className="btn btn-outline-danger btn-sm rounded-pill  py-2 px-2"
                       onClick={(e) => {
                         e.stopPropagation();
                         addToCart(product);
@@ -110,7 +110,7 @@ function Products() {
         )}
       </div>
       <style>{`
-        .transition { transition: all 0.3s ease; }
+        .transition { transition: all 0.4s ease; }
         .hover-shadow:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
       `}</style>
     </div>

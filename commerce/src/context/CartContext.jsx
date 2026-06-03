@@ -30,7 +30,7 @@ function getProductId(cartItem) {
 }
 
 export function CartProvider({ children }) {
-  const { user } = useAuth(); // вземи user от контекста
+  const { user } = useAuth(); 
   const [cartItems, setCartItems] = useState([]);
   const [products, setProducts] = useState([]);
 
