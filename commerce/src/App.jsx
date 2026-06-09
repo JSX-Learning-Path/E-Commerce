@@ -7,7 +7,7 @@ import About from "./view/About";
 import Products from "./Product";
 import Contact from "./view/Contact";
 import Login from "./Login";
-import SecondNavigation from "./SecondNavigation";
+// import SecondNavigation from "./SecondNavigation";
 import Register from "./Register";
 import Home from "./view/Home";
 import Footer from "./Footer";
@@ -30,7 +30,7 @@ function App() {
         <GlobalStyle />
         <Header theme={theme} toggleTheme={toggleTheme} />
         {/* <Switch /> */}
-        <SecondNavigation />
+        {/* <SecondNavigation /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
