@@ -43,8 +43,8 @@ function Header({ theme, toggleTheme }) {
           </div>
 
           <nav className="header-nav" aria-label="Primary navigation">
-            <Link to="/products" className="header-nav-link">
-              <FaBoxOpen size={18} /> Products
+            <Link to="/products" className="header-nav-link ">
+              <FaBoxOpen size={18} h /> Products
             </Link>
             <Link to="/about" className="header-nav-link">
               <FaInfoCircle size={18} /> About
@@ -54,7 +54,7 @@ function Header({ theme, toggleTheme }) {
             </Link>
           </nav>
 
-          <div className="header-utilities">
+          <div className="header-utilities align-items-center">
             {user ? (
               <>
                 <Link to="/profile" className="header-profile-link">
