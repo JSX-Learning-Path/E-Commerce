@@ -78,4 +78,3 @@ This project is intended for learning purposes. Add a license of your choice or 
 
 ---
 
-If you want, I can add a section for design/UX decisions, automated tests, CI configuration (GitHub Actions), or sample development data. Tell me which option you prefer and I'll add it.
