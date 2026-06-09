@@ -12,6 +12,7 @@ import WishListDrawer from "./components/WishListDrawer";
 // import WishListDrawer from "./components/WishListDrawer";
 // import { useWishList } from "./context/WishContext";
 import { useWishList } from "./context/WishContext";
+import "./styles/Header.css";
 
 function Header({ theme, toggleTheme }) {
   const [showCart, setShowCart] = React.useState(false);
@@ -31,223 +32,6 @@ function Header({ theme, toggleTheme }) {
 
   return (
     <header className={`site-header site-header-${theme}`}>
-      <style>{`
-        .site-header {
-          position: sticky;
-          top: 0;
-          z-index: 1040;
-          backdrop-filter: blur(18px);
-          border-bottom: 1px solid ${theme === "dark"
-            ? "rgba(148, 163, 184, 0.16)"
-            : "rgba(15, 23, 42, 0.08)"};
-          background: ${theme === "dark"
-            ? "linear-gradient(180deg, rgba(15, 23, 42, 0.94) 0%, rgba(17, 24, 39, 0.9) 100%)"
-            : "linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.9) 100%)"};
-        }
-
-        .header-shell {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          flex-wrap: wrap;
-          padding: 0.9rem 0;
-        }
-
-        .header-brand {
-          display: inline-flex;
-          align-items: center;
-          flex: 0 0 auto;
-        }
-
-        .header-brand img {
-          height: 52px;
-          width: auto;
-          display: block;
-        }
-
-        .header-search {
-          flex: 1 1 340px;
-          min-width: min(100%, 280px);
-        }
-
-        .header-nav {
-          display: flex;
-          align-items: center;
-          gap: 0.35rem;
-          flex-wrap: wrap;
-        }
-
-        .header-nav-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.55rem;
-          padding: 0.75rem 1rem;
-          border-radius: 999px;
-          color: ${theme === "dark" ? "#e2e8f0" : "#0f172a"};
-          text-decoration: none;
-          font-weight: 600;
-          transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-        }
-
-        .header-nav-link:hover {
-          background: ${theme === "dark"
-            ? "rgba(30, 41, 59, 0.92)"
-            : "rgba(226, 232, 240, 0.78)"};
-          color: ${theme === "dark" ? "#ffffff" : "#020617"};
-          transform: translateY(-1px);
-        }
-
-        .header-utilities {
-          margin-left: auto;
-          display: inline-flex;
-          align-items: center;
-          gap: 0.75rem;
-          flex-wrap: wrap;
-        }
-
-        .header-profile-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.7rem;
-          min-height: 52px;
-          max-width: 360px;
-          padding: 0.75rem 1.1rem;
-          border-radius: 999px;
-          border: 1px solid ${theme === "dark"
-            ? "rgba(96, 165, 250, 0.32)"
-            : "rgba(37, 99, 235, 0.26)"};
-          background: ${theme === "dark"
-            ? "rgba(30, 41, 59, 0.86)"
-            : "rgba(255, 255, 255, 0.88)"};
-          color: ${theme === "dark" ? "#bfdbfe" : "#2563eb"};
-          text-decoration: none;
-          font-weight: 600;
-          box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
-        }
-
-        .header-profile-link:hover {
-          transform: translateY(-1px);
-        }
-
-        .header-profile-text {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
-        .header-action-btn,
-        .header-signout-btn {
-          width: 52px;
-          height: 52px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 18px;
-          box-shadow: 0 14px 30px rgba(15, 23, 42, 0.1);
-        }
-
-        .header-action-btn {
-          border: 1px solid rgba(148, 163, 184, 0.2);
-          background: ${theme === "dark"
-            ? "rgba(30, 41, 59, 0.92)"
-            : "rgba(255, 255, 255, 0.92)"};
-          color: ${theme === "dark" ? "#f8fafc" : "#0f172a"};
-        }
-
-        .header-signout-btn {
-          border: 1px solid rgba(248, 113, 113, 0.28);
-          background: ${theme === "dark"
-            ? "rgba(127, 29, 29, 0.24)"
-            : "rgba(254, 242, 242, 0.92)"};
-          color: ${theme === "dark" ? "#fecaca" : "#b91c1c"};
-        }
-
-        .header-action-btn:hover,
-        .header-signout-btn:hover {
-          transform: translateY(-1px);
-        }
-
-        .header-icon-svg {
-          width: 28px;
-          height: 28px;
-          display: block;
-          color: inherit;
-          fill: none;
-          stroke: currentColor;
-          stroke-width: 1.9;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-        }
-
-        .header-icon-heart {
-          fill: currentColor;
-          stroke: none;
-        }
-
-        .header-auth-links {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.6rem;
-          flex-wrap: wrap;
-        }
-
-        .header-auth-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.55rem;
-          min-height: 48px;
-          padding: 0.75rem 1rem;
-          border-radius: 999px;
-          text-decoration: none;
-          font-weight: 600;
-          color: ${theme === "dark" ? "#f8fafc" : "#0f172a"};
-          background: ${theme === "dark"
-            ? "rgba(30, 41, 59, 0.88)"
-            : "rgba(255, 255, 255, 0.9)"};
-          border: 1px solid rgba(148, 163, 184, 0.16);
-        }
-
-        @media (max-width: 1199px) {
-          .header-nav {
-            order: 3;
-            width: 100%;
-          }
-
-          .header-utilities {
-            margin-left: 0;
-          }
-        }
-
-        @media (max-width: 767px) {
-          .header-shell {
-            gap: 0.85rem;
-          }
-
-          .header-brand img {
-            height: 46px;
-          }
-
-          .header-search,
-          .header-nav,
-          .header-utilities {
-            width: 100%;
-          }
-
-          .header-nav {
-            justify-content: center;
-          }
-
-          .header-utilities {
-            justify-content: space-between;
-          }
-
-          .header-profile-link {
-            max-width: calc(100% - 70px);
-            flex: 1 1 auto;
-          }
-        }
-      `}</style>
-
       <div className="container">
         <div className="header-shell">
           <Link to="/" className="header-brand" aria-label="NexCart home">
@@ -274,7 +58,12 @@ function Header({ theme, toggleTheme }) {
             {user ? (
               <>
                 <Link to="/profile" className="header-profile-link">
-                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    aria-hidden="true"
+                  >
                     <circle cx="12" cy="8" r="3.5" fill="currentColor"></circle>
                     <path
                       d="M4.5 19a7.5 7.5 0 0 1 15 0"
@@ -284,7 +73,9 @@ function Header({ theme, toggleTheme }) {
                       strokeLinecap="round"
                     ></path>
                   </svg>
-                  <span className="header-profile-text">Hey, {displayName}</span>
+                  <span className="header-profile-text">
+                    Hey, {displayName}
+                  </span>
                 </Link>
                 <button
                   type="button"
@@ -292,7 +83,11 @@ function Header({ theme, toggleTheme }) {
                   onClick={handleLogout}
                   aria-label="Sign out"
                 >
-                  <svg viewBox="0 0 24 24" className="header-icon-svg" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="header-icon-svg"
+                    aria-hidden="true"
+                  >
                     <path d="M14 7V5.5A1.5 1.5 0 0 0 12.5 4h-6A1.5 1.5 0 0 0 5 5.5v13A1.5 1.5 0 0 0 6.5 20h6a1.5 1.5 0 0 0 1.5-1.5V17"></path>
                     <path d="M10 12h9"></path>
                     <path d="m16 8 4 4-4 4"></path>
@@ -312,7 +107,7 @@ function Header({ theme, toggleTheme }) {
 
             <button
               type="button"
-              className="btn position-relative header-action-btn"
+              className="btn position-relative header-action-btn bg-"
               onClick={() => setShowWishList(true)}
               aria-label="Open Wishlist"
             >
@@ -336,9 +131,25 @@ function Header({ theme, toggleTheme }) {
               onClick={() => setShowCart(true)}
               aria-label="Open Cart"
             >
-              <svg viewBox="0 0 24 24" className="header-icon-svg" aria-hidden="true">
-                <circle cx="10" cy="19" r="1.6" fill="currentColor" stroke="none"></circle>
-                <circle cx="17.5" cy="19" r="1.6" fill="currentColor" stroke="none"></circle>
+              <svg
+                viewBox="0 0 24 24"
+                className="header-icon-svg  "
+                aria-hidden="true"
+              >
+                <circle
+                  cx="10"
+                  cy="19"
+                  r="1.6"
+                  fill="currentColor"
+                  stroke="none"
+                ></circle>
+                <circle
+                  cx="17.5"
+                  cy="19"
+                  r="1.6"
+                  fill="currentColor"
+                  stroke="none"
+                ></circle>
                 <path d="M3 4h2.4l1.7 8.1a1.8 1.8 0 0 0 1.8 1.4h8.1a1.8 1.8 0 0 0 1.7-1.2L20.5 7H7.2"></path>
               </svg>
               {itemsCount > 0 && (
@@ -358,7 +169,11 @@ function Header({ theme, toggleTheme }) {
         onClose={() => setShowWishList(false)}
         theme={theme}
       />
-      <CartDrawer open={showCart} onClose={() => setShowCart(false)} theme={theme} />
+      <CartDrawer
+        open={showCart}
+        onClose={() => setShowCart(false)}
+        theme={theme}
+      />
     </header>
   );
 }

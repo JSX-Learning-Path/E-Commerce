@@ -86,15 +86,15 @@ function Products() {
                   >
                     {product.description}
                   </p>
-                  <div className="d-flex justify-content-between align-items-center mt-3">
+                  <div className="d-flex  justify-content-between align-items-center mt-3">
                     <span className="fw-bold text-primary ">
                       ${product.price}
                     </span>
-                    <button className="btn btn-outline-primary btn-sm rounded-pill py-2 px-2  ">
+                    <button className="btn btn-outline-primary btn-sm rounded-pill py-1 px-2 ">
                       View Details
                     </button>
                     <button
-                      className="btn btn-outline-danger btn-sm rounded-pill  py-2 px-2"
+                      className="btn btn-outline-danger btn-sm rounded-pill py-1 px-1"
                       onClick={(e) => {
                         e.stopPropagation();
                         addToCart(product);

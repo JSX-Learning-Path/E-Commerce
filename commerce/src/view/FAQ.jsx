@@ -11,12 +11,9 @@ function FAQ() {
   };
 
   return (
-    <div className="mt-4 bg-light p-4 rounded width-300">
+    <div className="mt-3 bg-light p-4 rounded width-300">
       <h2 className="text-dark text-center text-sm ">
-        You have questions?{" "}
-        <span className="text-underline text-success opacity-75 text-sm">
-          Find them here.
-        </span>{" "}
+        Frequently Asked Questions
       </h2>
       {questions.map((item, index) => {
         const open = openIndex === index;
@@ -30,7 +27,7 @@ function FAQ() {
               <p className="text-muted mb-0 ">{item.question}</p>
               <IoIosArrowDown
                 className={`faq-arrow ${open ? "open" : ""} text-muted rounded`}
-                style={{ transition: "transform 200ms"}}
+                style={{ transition: "transform 200ms" }}
                 aria-hidden="true"
               />
             </div>
