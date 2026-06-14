@@ -32,6 +32,7 @@ function getProductId(cartItem) {
 export function CartProvider({ children }) {
   const { user } = useAuth(); 
   const [cartItems, setCartItems] = useState([]);
+  const [promo, setPromo] = useState(null);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -132,10 +133,24 @@ export function CartProvider({ children }) {
       (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
       0,
     );
-    const shipping = mergedCartItems.length > 0 && subTotal < 200 ? 9.99 : 0;
-    const total = subTotal + shipping;
-    return { itemsCount, subTotal, shipping, total };
-  }, [mergedCartItems]);
+    const baseShipping = mergedCartItems.length > 0 && subTotal < 200 ? 9.99 : 0;
+
+    let discount = 0;
+    let shipping = baseShipping;
+
+    if (promo) {
+      if (promo.type === "percent") {
+        discount = (subTotal * (promo.value || 0)) / 100;
+      }
+
+      if (promo.type === "shipping") {
+        shipping = 0;
+      }
+    }
+
+    const total = Math.max(0, subTotal - discount + shipping);
+    return { itemsCount, subTotal, shipping, total, discount, promo };
+  }, [mergedCartItems, promo]);
 
   const handleAddToCart = async (product) => {
     if (!user) return;
@@ -197,6 +212,47 @@ export function CartProvider({ children }) {
     if (!user) return;
     await apiClearCart(user.id);
     setCartItems([]);
+    setPromo(null);
+  };
+
+  const loadStoredPromos = () => {
+    try {
+      const raw = window.localStorage.getItem("promo-codes");
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  };
+
+  const saveStoredPromos = (obj) => {
+    try {
+      window.localStorage.setItem("promo-codes", JSON.stringify(obj));
+    } catch (e) {
+      // ignore
+    }
+  };
+
+  const applyPromoCode = (code) => {
+    if (!code) return { ok: false, message: "Enter a code" };
+    const promos = loadStoredPromos();
+    const entry = promos[code];
+    if (!entry) return { ok: false, message: "Invalid code" };
+    if (entry.used) return { ok: false, message: "Code already used" };
+
+    setPromo({ code, ...entry });
+    return { ok: true, message: "Promo applied" };
+  };
+
+  const clearPromo = () => setPromo(null);
+
+  const markPromoUsed = (code) => {
+    if (!code) return;
+    const promos = loadStoredPromos();
+    if (promos[code]) {
+      promos[code].used = true;
+      saveStoredPromos(promos);
+    }
+    setPromo(null);
   };
 
   return (
@@ -208,6 +264,10 @@ export function CartProvider({ children }) {
         updateCartItemQuantity: handleUpdateCartItemQuantity,
         clearCart: handleClearCart,
         ...totals,
+        applyPromoCode,
+        clearPromo,
+        markPromoUsed,
+        promo,
       }}
     >
       {children}

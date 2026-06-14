@@ -11,7 +11,7 @@ This is a learning project for an e-commerce front-end built with React and Vite
 - UI components for payment card, cart drawer, and wishlist drawer.
 - A simple fake API for demo/testing under `src/api`.
 - Styles written with plain CSS and Bootstrap.
-
+b
 ## Tech Stack
 
 - React

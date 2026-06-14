@@ -30,11 +30,18 @@ function CartDrawer({ open, onClose, theme = "light" }) {
     subTotal,
     shipping,
     total,
+    applyPromoCode,
+    clearPromo,
+    promo,
+    markPromoUsed,
+    discount,
   } = useCart();
   // const { createOrder } = useOrders();
   const [step, setStep] = useState("cart");
   const [checkoutData, setCheckoutData] = useState(initialCheckoutState);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [promoInput, setPromoInput] = useState("");
+  const [promoMessage, setPromoMessage] = useState("");
 
   useEffect(() => {
     if (!open) {
@@ -150,6 +157,9 @@ function CartDrawer({ open, onClose, theme = "light" }) {
         total,
       },
     });
+    if (promo && promo.code) {
+      markPromoUsed(promo.code);
+    }
 
     clearCart();
     setCheckoutData(initialCheckoutState);
@@ -259,7 +269,45 @@ function CartDrawer({ open, onClose, theme = "light" }) {
                   ))}
                 </div>
 
-                <div className="cart-summary-card mt-4">
+                <div className="mt-3">
+                  <label className="form-label small mb-2">Promo code</label>
+                  <div className="input-group mb-3">
+                    <input
+                      className="form-control"
+                      placeholder="Enter promo code"
+                      value={promoInput}
+                      onChange={(e) => setPromoInput(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary"
+                      onClick={() => {
+                        const res = applyPromoCode(promoInput.trim());
+                        setPromoMessage(res.message);
+                        if (res.ok) setPromoInput("");
+                      }}
+                    >
+                      Apply
+                    </button>
+                  </div>
+                  {promo && (
+                    <div className="alert alert-success py-2 d-flex justify-content-between align-items-center">
+                      <div>
+                        <strong>{promo.code}</strong> — {promo.type === "percent" ? `${promo.value}% off` : "Free shipping"}
+                      </div>
+                      <button className="btn btn-sm btn-outline-danger" onClick={() => clearPromo()}>
+                        Remove
+                      </button>
+                    </div>
+                  )}
+
+                  {promoMessage && (
+                    <div className="small text-muted mb-2">{promoMessage}</div>
+                  )}
+
+                </div>
+
+                <div className="cart-summary-card mt-2">
                   <div className="d-flex justify-content-between mb-2">
                     <span>Subtotal</span>
                     <strong>${subTotal.toFixed(2)}</strong>
@@ -270,6 +318,12 @@ function CartDrawer({ open, onClose, theme = "light" }) {
                       {shipping === 0 ? "Free" : `$${shipping.toFixed(2)}`}
                     </strong>
                   </div>
+                  {discount > 0 && (
+                    <div className="d-flex justify-content-between mb-2 text-success">
+                      <span>Discount</span>
+                      <strong>-${discount.toFixed(2)}</strong>
+                    </div>
+                  )}
                   <div className="d-flex justify-content-between pt-3 border-top">
                     <span className="fw-semibold">Total</span>
                     <strong className="fs-5 text-primary">

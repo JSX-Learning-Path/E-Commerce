@@ -15,7 +15,7 @@ import ProductDetails from "./view/ProductDetails";
 import { WishListProvider } from "./context/WishContext";
 import Profile from "./Profile";
 import FAQ from "./view/FAQ";
-
+import  { Toaster } from "react-hot-toast";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -44,10 +44,9 @@ function App() {
         </Routes>
         <Footer />
       </WishListProvider>
+      <Toaster position="top-center" reverseOrder={false} />
     </ThemeProvider>
   );
 }
 
 export default App;
-
-

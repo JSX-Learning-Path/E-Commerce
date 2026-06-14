@@ -4,6 +4,8 @@ import { useAuth } from "./context/AuthContext";
 import { useOrders } from "./context/OrderContext";
 import { useCart } from "./context/CartContext";
 import { useWishList } from "./context/WishContext";
+import SpinWheel from "./SpinWheel";
+import { useState } from "react";
 import "./styles/Profile.css";
 
 function formatCurrency(value) {
@@ -21,6 +23,7 @@ function formatDate(value) {
 // Profile View
 
 function Profile({ theme = "light" }) {
+  const [showSpin, setShowSpin] = useState(false);
   const { user } = useAuth();
   const { orders, ordersCount } = useOrders();
   const { wishListCount } = useWishList();
@@ -131,6 +134,12 @@ function Profile({ theme = "light" }) {
                   <div className="profile-field-value">
                     {wishListCount} in wishlist
                   </div>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => setShowSpin(true)}
+                  >
+                    Spin the wheel
+                  </button>
                 </div>
               </div>
             </div>
@@ -266,6 +275,7 @@ function Profile({ theme = "light" }) {
           </div>
         </div>
       </div>
+      <SpinWheel show={showSpin} onClose={() => setShowSpin(false)} />
     </div>
   );
 }
