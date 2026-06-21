@@ -127,10 +127,10 @@ const Home = () => {
   if (loading) return <Loading />;
 
   return (
-    <div className=" min-vh-100">
+    <div className="min-vh-100 ">
       <div className="container-fluid p-0 mb-5 position-relative">
         <div
-          className="bg-dark text-white text-center py-5 shadow-sm hero-section"
+          className="mobile-card bg-dark text-white text-center py-5 shadow-sm hero-section"
           style={{
             backgroundImage: "linear-gradient(45deg, #3aa3e4 0%, #ffffff 100%)",
             minHeight: "350px",
@@ -262,6 +262,7 @@ const Home = () => {
         .transition-all { transition: all 0.2s ease-in-out; }
         .hover-shadow:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .hover-bg-primary:hover { background-color: #0d6efd; color: white; }
+        margin-top: 120px;
       `}</style>
     </div>
   );

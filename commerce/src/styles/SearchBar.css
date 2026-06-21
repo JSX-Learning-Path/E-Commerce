@@ -3,12 +3,13 @@
   padding: 0;
   margin: 0.5rem 0 0 0;
   max-height: 300px;
-  overflow-y: auto;
+  overflow-x: hidden;
   padding-left: 0;
-  margin-top: 8px;
+  margin-top: -20px;
   position: absolute;
   top: 80%;
   z-index: 1;
+  width: 370px;
 }
 
 .search-results li {
@@ -25,15 +26,10 @@
 .search-input {
   position: relative;
   height: 50px;
-  width: 400px;
+  width: 720px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-/* .search-button {
-  position: absolute;
-  font-weight: 200;
-  font-family: "Verdana";
-  font-size: 18px;
-} */
+
 .search-form {
   position: relative;
   width: 50%;
@@ -57,4 +53,59 @@
   );
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
   border: 1px solid rgba(148, 163, 184, 0.2);
+}
+.result-clear {
+  position: absolute;
+  bottom: 15rem;
+  right: -1rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.75rem;
+  z-index: 1060;
+}
+.result-clear:focus {
+  outline: none;
+}
+.result-text {
+  flex: 1 1 auto;
+  padding: 0 12px;
+}
+.result-title {
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+.result-price {
+  font-size: 13px;
+  color: #6b7280;
+}
+.search-list {
+  width: 350px;
+}
+.search-burger {
+  .search-burger {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 767px) {
+    /* move burger out of the input and to the right side on small screens */
+    .search-burger {
+      position: static;
+      right: auto;
+      transform: none;
+      margin-left: auto;
+    }
+  }
 }

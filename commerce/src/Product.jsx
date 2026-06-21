@@ -1,9 +1,11 @@
-// import { fakeApi } from "./api/FakeApi";
+
 import Loading from "./components/Loading";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "./context/CartContext";
+import { BsViewList } from "react-icons/bs";
+import { BiCart } from "react-icons/bi";
 
 function Products() {
   const [, setProducts] = useState([]);
@@ -86,21 +88,21 @@ function Products() {
                   >
                     {product.description}
                   </p>
-                  <div className="d-flex  justify-content-between align-items-center mt-3">
+                  <div className="d-flex justify-content-around align-items-center ">
                     <span className="fw-bold text-primary ">
                       ${product.price}
                     </span>
-                    <button className="btn btn-outline-primary btn-sm rounded-pill py-1 px-2 ">
-                      View Details
-                    </button>
+                    {/* <button className="btn btn-outline-primary btn-sm rounded-pill py-2 px-4">
+                      <BsViewList />
+                    </button> */}
                     <button
-                      className="btn btn-outline-danger btn-sm rounded-pill py-1 px-1"
+                      className="btn btn-outline-danger btn-sm rounded-pill py-3 px-5"
                       onClick={(e) => {
                         e.stopPropagation();
                         addToCart(product);
                       }}
                     >
-                      Add to Cart
+                      <BiCart size={28} />
                     </button>
                   </div>
                 </div>

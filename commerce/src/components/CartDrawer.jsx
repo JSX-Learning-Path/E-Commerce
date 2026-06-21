@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PaymentCard from "./PaymentCard";
 import { useCart } from "../context/CartContext";
-// import { useOrders } from "../context/OrdersContext";
+import { TiArrowLeftOutline } from "react-icons/ti";
+
 
 
 const initialCheckoutState = {
@@ -364,6 +365,7 @@ function CartDrawer({ open, onClose, theme = "light" }) {
               onClick={() => setStep("cart")}
             >
               ← Back to cart
+              <TiArrowLeftOutline />
             </button>
             <div className="checkout-section">
               <h5 className="mb-3">Delivery details</h5>

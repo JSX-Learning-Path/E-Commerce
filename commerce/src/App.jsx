@@ -7,7 +7,6 @@ import About from "./view/About";
 import Products from "./Product";
 import Contact from "./view/Contact";
 import Login from "./Login";
-// import SecondNavigation from "./SecondNavigation";
 import Register from "./Register";
 import Home from "./view/Home";
 import Footer from "./Footer";
@@ -15,7 +14,10 @@ import ProductDetails from "./view/ProductDetails";
 import { WishListProvider } from "./context/WishContext";
 import Profile from "./Profile";
 import FAQ from "./view/FAQ";
-import  { Toaster } from "react-hot-toast";
+import Help from "./view/HelpCenter";
+import Privacy from "./view/PrivacyPolicy";
+import Terms from "./view/TermsOfService";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [theme, setTheme] = useState("light");
@@ -41,6 +43,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
         </Routes>
         <Footer />
       </WishListProvider>

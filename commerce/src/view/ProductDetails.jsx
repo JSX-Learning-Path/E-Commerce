@@ -4,6 +4,7 @@ import fakeApi from "../api/FakeApi";
 import Loading from "../components/Loading";
 import { useCart } from "../context/CartContext";
 import { useWishList } from "../context/WishContext";
+import { TiArrowLeftOutline } from "react-icons/ti";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -41,7 +42,7 @@ const ProductDetails = () => {
       }
     };
     getProductData();
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
   }, [id]);
 
   const handleAddToCart = () => {
@@ -69,10 +70,10 @@ const ProductDetails = () => {
   return (
     <div className="container py-5">
       <button
-        className="btn btn-outline-dark mb-4"
+        className="btn btn-outline-dark mb-4 pl-2"
         onClick={() => navigate(-1)}
       >
-        <i className="bi bi-arrow-left me-2"></i>Back
+        <TiArrowLeftOutline className="m-2 " />
       </button>
 
       <div className="row g-4 g-lg-5">

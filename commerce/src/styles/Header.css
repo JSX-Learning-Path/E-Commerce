@@ -46,7 +46,7 @@
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 1040;
+  z-index: 1100; /* ensure header stays above mobile overlay */
   backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--header-border);
   background: var(--header-bg);
@@ -73,8 +73,22 @@
 }
 
 .header-search {
-  flex: 1 1 340px;
-  min-width: min(100%, 280px);
+  flex: 2 1 520px;
+  min-width: min(100%, 360px);
+  max-width: 860px;
+}
+
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-search .search-form {
+  flex: 1;
+}
+
+.header-burger {
+  margin-left: 70px;
 }
 
 .header-nav {
@@ -205,6 +219,161 @@
   border: 1px solid rgba(148, 163, 184, 0.16);
 }
 
+/* Hamburger button */
+.header-burger {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  border: 1px solid var(--header-border);
+  background: var(--action-bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+.burger-lines {
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  display: block;
+  position: relative;
+}
+.burger-lines::before,
+.burger-lines::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+}
+.burger-lines::before {
+  top: -6px;
+}
+.burger-lines::after {
+  top: 6px;
+}
+
+/* Mobile menu panel */
+.mobile-menu {
+  position: fixed; /* cover viewport area and align with overlay */
+  left: 12px;
+  right: 12px;
+  top: 68px; /* under the sticky header */
+  margin: 0 auto;
+  max-width: 760px;
+  background: rgba(8, 12, 20, 0.85); /* darker, less white */
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 16px;
+  display: none;
+  z-index: 1050;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.45);
+  transform-origin: top center;
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.9, 0.2, 1),
+    opacity 0.18s ease;
+  opacity: 0;
+  transform: translateY(-12px) scale(0.98);
+  backdrop-filter: blur(8px) saturate(120%);
+}
+.mobile-menu.open::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 68px; /* start below the sticky header */
+  bottom: 0;
+  background: rgba(
+    4,
+    6,
+    10,
+    0.35
+  ); /* lighter overlay so content remains visible */
+  backdrop-filter: blur(4px);
+  z-index: 1035; /* below the header but below the mobile menu */
+  pointer-events: auto;
+}
+.mobile-menu.open {
+  display: block;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: menuIn 0.28s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98) rotateX(6deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0);
+  }
+}
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 10px;
+  color: var(--nav-link-color);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+}
+.mobile-nav-link svg {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  color: inherit;
+}
+.mobile-nav-link:hover {
+  background: var(--nav-link-hover-bg);
+  color: var(--nav-link-hover-color);
+}
+.mobile-auth-link {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--profile-bg);
+  color: var(--profile-color);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.mobile-utilities {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mobile-utilities .btn {
+  width: 100%;
+  border-radius: 10px;
+}
+.mobile-utilities .btn-light {
+  background: #f8f9fa;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.mobile-utilities .btn-dark {
+  background: #111827;
+  color: #fff;
+}
+
+/* subtle separator */
+.mobile-menu .divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.02));
+  margin: 8px 0;
+  border-radius: 1px;
+}
+
 @media (max-width: 1199px) {
   .header-nav {
     order: 3;
@@ -226,9 +395,18 @@
   }
 
   .header-search,
-  .header-nav,
   .header-utilities {
     width: 100%;
+  }
+
+  /* hide the desktop nav on small screens; use mobile menu instead */
+  .header-nav {
+    display: none !important;
+  }
+
+  .header-search {
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .header-nav {
@@ -242,5 +420,8 @@
   .header-profile-link {
     max-width: calc(100% - 70px);
     flex: 1 1 auto;
+  }
+  .mobile-card {
+    min-height: 500px !important;
   }
 }
