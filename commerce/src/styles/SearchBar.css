@@ -28,21 +28,22 @@
   height: 50px;
   width: 720px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding-right: 3rem;
 }
 
 .search-form {
   position: relative;
-  width: 50%;
+  width: 100%;
 }
 
 .search-icon-inside {
   position: absolute;
-  right: 1rem;
   top: 50%;
+  right: 1rem;
   transform: translateY(-50%);
-  color: #aaa;
+  color: #999;
   pointer-events: none;
-  font-size: 1.2rem;
 }
 
 .dark-theme .search-form {

@@ -26,15 +26,13 @@ function SearchBar({ burger }) {
 
   return (
     <div>
-      <div className="search-form d-flex align-items-center gap-2 position-relative">
-        <div className="search-wrap flex-1"></div>
+      <div className="search-form position-relative">
         <input
           type="text"
           placeholder="Search products..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="form-control search-input transition focus-shadow"
-          // style={{ paddingRight: "2.5rem" }}
+          className="form-control search-input"
         />
         <GoSearch className="search-icon-inside" />
       </div>
@@ -83,7 +81,7 @@ function SearchBar({ burger }) {
           ))}
         </ul>
       )}
-    {burger && <div className="search-burger">{burger}</div>}
+      {burger && <div className="search-burger">{burger}</div>}
     </div>
   );
 }
