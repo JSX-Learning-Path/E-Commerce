@@ -261,7 +261,7 @@
   top: 68px;
   margin: 0 auto;
   max-width: 760px;
-  background: rgba(8, 12, 20, 0.85);
+  background: rgba(255, 255, 255, 0.85);
   color: #f8fafc;
   border: 1px solid rgba(255, 255, 255, 0.06);
   padding: 16px;
@@ -277,7 +277,7 @@
   transform: translateY(-12px) scale(0.98);
   backdrop-filter: blur(2px) saturate(1200%);
 }
-.mobile-menu.open::before {
+/* .mobile-menu.open::before {
   content: "";
   position: fixed;
   left: 0;
@@ -287,7 +287,7 @@
   background: rgba(4, 6, 10, 0.35);
   z-index: 1035;
   pointer-events: auto;
-}
+} */
 .mobile-menu.open {
   display: block;
   opacity: 1;
@@ -351,7 +351,7 @@
   border-radius: 10px;
 }
 .mobile-utilities .btn-light {
-  background: #f8f9fa;
+  background: #111827;
   border: 1px solid rgba(0, 0, 0, 0.06);
 }
 .mobile-utilities .btn-dark {

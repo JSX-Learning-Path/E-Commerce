@@ -12,10 +12,10 @@ function randomCode(len = 4) {
 export default function SpinWheel({ open, show, onClose }) {
   const isOpen = open ?? show;
   const segments = [
-    { label: "15%", type: "percent", value: 15 },
     { label: "10%", type: "percent", value: 10 },
     { label: "Free shipping", type: "shipping", value: 0 },
     { label: "20%", type: "percent", value: 20 },
+    { label: "15%", type: "percent", value: 15 },
   ];
 
   const [angle, setAngle] = useState(0);
@@ -27,30 +27,44 @@ export default function SpinWheel({ open, show, onClose }) {
     if (spinning) return;
     setResult(null);
     setSpinning(true);
+
     const idx = Math.floor(Math.random() * segments.length);
     const per = 360 / segments.length;
-    const randomFull = 190 * 6;
-    const target = 270 - idx * per - per / 4;
-    const finalAngle = randomFull + target;
+    const targetAngle = idx * per + per / 2;
+    const pointerAngle = 90;
+    const extraTurns = 6 * 360;
+    const current = angle % 360;
+    const delta = (targetAngle - pointerAngle - current + 360) % 360;
+    const finalAngle = angle + extraTurns + delta;
+    console.log("Index:", idx);
+    console.log("Prize:", segments[idx].label);
+    console.log("Final angle:", finalAngle);
+    console.log("Final %360:", finalAngle % 360);
 
-    setAngle((a) => a + finalAngle);
+    setAngle(finalAngle);
 
     setTimeout(() => {
       const seg = segments[idx];
+
       const codePrefix =
         seg.type === "percent" ? `DISC${seg.value}` : "FREESHIP";
+
       const code = `${codePrefix}-${randomCode(4)}`;
 
       try {
-        const raw = window.localStorage.getItem("promo-codes");
+        const raw = localStorage.getItem("promo-codes");
         const obj = raw ? JSON.parse(raw) : {};
-        obj[code] = { type: seg.type, value: seg.value, used: false };
-        window.localStorage.setItem("promo-codes", JSON.stringify(obj));
-      } catch {
-        // ignore storage failures
-      }
 
-      setResult({ code, seg });
+        obj[code] = {
+          type: seg.type,
+          value: seg.value,
+          used: false,
+        };
+
+        localStorage.setItem("promo-codes", JSON.stringify(obj));
+      } catch {}
+
+      setResult({ seg, code });
       setSpinning(false);
     }, 3800);
   };
@@ -155,7 +169,7 @@ export default function SpinWheel({ open, show, onClose }) {
                   borderRadius: "50%",
                   boxShadow: "0 30px 60px rgba(15,23,42,0.25)",
                   background:
-                    "conic-gradient(#ffbf69 0 25%, #ff7b7b 25% 50%, #7ee7b7 50% 75%, #7fb3ff 75% 100%)",
+                    "conic-gradient(from -90deg, #ffbf69 0 25%, #ff7b7b 25% 50%, #7ee7b7 50% 75%, #7fb3ff 75% 100%)",
                   transform: `rotate(${angle}deg)`,
                   transition: spinning
                     ? "transform 3.8s cubic-bezier(.17,.67,.21,1)"

@@ -70,19 +70,15 @@ const Home = () => {
               .filter((p) => p.category === "smartphones")
               .slice(0, 4),
           },
+
           {
             title: "Glow & Beauty",
             slug: "beauty",
             color: "border-warning",
             icon: "bi-stars",
             bg: "bg-warning-subtle",
-            type: "single",
-            // item: products.find((p) => p.category === "beauty"),
-            item: products
-              .filter(
-                (p) => p.category === "beauty" || p.category === "skincare",
-              )
-              .slice(0, 4), // Fix this later
+            type: "grid",
+            items: products.filter((p) => p.category === "beauty").slice(0, 4),
           },
           {
             title: "Auto & Moto",

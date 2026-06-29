@@ -529,7 +529,7 @@ function CartDrawer({ open, onClose, theme = "light" }) {
             inset: 0;
             background: rgba(15, 23, 42, 0.5);
             backdrop-filter: blur(5px);
-            z-index: 1060;
+            z-index: 1070;
           }
 
           .cart-panel {
