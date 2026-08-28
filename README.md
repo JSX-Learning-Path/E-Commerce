@@ -21,7 +21,7 @@ b
 
 ## Quick Start (Local)
 
-Open a terminal in the project root (`/Users/dg/Desktop/E-Commerce/commerce`) and run the following commands (zsh):
+
 
 ```bash
 cd commerce
